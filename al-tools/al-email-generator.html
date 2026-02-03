@@ -1,0 +1,5287 @@
+<!DOCTYPE html>
+
+<html lang="en" data-theme="light">
+  <head>
+    <script>
+      // Ensure default theme is LIGHT on first load; honor saved preference if present
+      (function () {
+        try {
+          var saved = localStorage.getItem("theme");
+          var init = saved ? saved : "light"; // default is light
+          var html = document.documentElement;
+          html.classList.remove("dark");
+          html.setAttribute("data-theme", init);
+          if (init === "dark") html.classList.add("dark");
+        } catch (e) {}
+      })();
+    </script>
+
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("theme");
+          var init = saved || "light";
+          var html = document.documentElement;
+          // normalize
+          html.classList.remove("dark");
+          html.setAttribute("data-theme", init);
+          if (init === "dark") html.classList.add("dark");
+        } catch (e) {}
+      })();
+    </script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VOKRA Adoption Follow-up Email Generator v2.9.1</title>
+    <!-- Google Fonts - Using Inter like Notion/Asana -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet" />
+
+    <style>
+      :root {
+        /* Notion/Asana inspired palette - Clean whites and subtle grays */
+        --color-bg: linear-gradient(
+          145deg,
+          #faf6f2 0%,
+          #ffffff 50%,
+          #ecadff10 100%
+        );
+        --color-bg-solid: #fbf8f5;
+        --color-surface: #ffffff;
+        --color-surface-alt: #f7f6f3;
+        --color-surface-hover: #f1f0ed;
+        --color-border: #e6e4e0;
+        --color-border-light: #eeeeec;
+        --color-divider: #e9e9e7;
+
+        /* Text - Notion-style hierarchy */
+        --color-text: #37352f;
+        --color-text-secondary: #6b6b6b;
+        --color-text-muted: #9b9a97;
+        --color-text-placeholder: #b4b4b4;
+
+        /* VOKRA Purple - Brand color */
+        --color-vokra: #7c5cbf;
+        --color-vokra-hover: #6a4bad;
+        --color-vokra-light: #f3f0fa;
+
+        /* Primary - Asana-style coral/salmon */
+        --color-primary: #f06a6a;
+        --color-primary-hover: #e85555;
+        --color-primary-light: #fef6f6;
+        --color-primary-glow: rgba(240, 106, 106, 0.12);
+
+        /* Secondary actions */
+        --color-secondary: #6b6b6b;
+        --color-secondary-hover: #555555;
+
+        /* Accent - Notion blue for links and highlights */
+        --color-accent: #2eaadc;
+        --color-accent-hover: #1a9bce;
+        --color-accent-light: #e7f6fc;
+
+        /* Highlight purple for email output */
+        --color-highlight: #9065b0;
+
+        /* Status colors - Asana style */
+        --color-success: #5da283;
+        --color-success-light: #f0f9f6;
+        --color-success-border: #c6e4d9;
+        --color-warning: #f1bd6c;
+        --color-warning-bg: #fffbf5;
+        --color-warning-border: #f5deb3;
+        --color-warning-text: #8c6e31;
+        --color-error: #e8384f;
+        --color-error-bg: #fef5f6;
+        --color-error-border: #f5c6cc;
+        --color-info: #4573d2;
+        --color-info-light: #f0f4fc;
+
+        /* Shadows - Very subtle like Notion */
+        --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06),
+          0 1px 2px rgba(0, 0, 0, 0.04);
+        --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05),
+          0 2px 4px rgba(0, 0, 0, 0.03);
+        --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.05),
+          0 4px 6px rgba(0, 0, 0, 0.03);
+        --shadow-popup: 0 0 0 1px rgba(0, 0, 0, 0.04),
+          0 4px 8px rgba(0, 0, 0, 0.08);
+
+        /* Transitions - Snappy like Notion */
+        --transition-fast: 0.1s ease;
+        --transition-normal: 0.15s ease;
+        --transition-slow: 0.25s ease;
+
+        /* Border radius - Notion uses subtle rounding */
+        --radius-xs: 3px;
+        --radius-sm: 4px;
+        --radius-md: 6px;
+        --radius-lg: 8px;
+        --radius-xl: 12px;
+
+        /* Spacing */
+        --space-xs: 4px;
+        --space-sm: 8px;
+        --space-md: 12px;
+        --space-lg: 16px;
+        --space-xl: 24px;
+        --space-2xl: 32px;
+      }
+
+      /* Dark mode - Notion dark style */
+      body.dark {
+        --color-bg: linear-gradient(
+          145deg,
+          #1f1d1a 0%,
+          #191919 50%,
+          #1d1b18 100%
+        );
+        --color-bg-solid: #1a1918;
+        --color-surface: #202020;
+        --color-surface-alt: #2f2f2f;
+        --color-surface-hover: #373737;
+        --color-border: #3d3d3d;
+        --color-border-light: #333333;
+        --color-divider: #3d3d3d;
+
+        --color-text: #e6e6e6;
+        --color-text-secondary: #9b9b9b;
+        --color-text-muted: #6b6b6b;
+        --color-text-placeholder: #5a5a5a;
+
+        --color-vokra: #9d82d9;
+        --color-vokra-hover: #b090e8;
+        --color-vokra-light: #2d2740;
+
+        --color-primary: #f07575;
+        --color-primary-hover: #f58888;
+        --color-primary-light: #3d2a2a;
+        --color-primary-glow: rgba(240, 117, 117, 0.15);
+
+        --color-secondary: #9b9b9b;
+        --color-secondary-hover: #b0b0b0;
+
+        --color-accent: #4db8e5;
+        --color-accent-hover: #66c4eb;
+        --color-accent-light: #1a3040;
+
+        --color-highlight: #a880c8;
+
+        --color-success: #6bc9a0;
+        --color-success-light: #1a3028;
+        --color-success-border: #2d5040;
+        --color-warning: #f5c97a;
+        --color-warning-bg: #3d3520;
+        --color-warning-border: #5c4d28;
+        --color-warning-text: #f5c97a;
+        --color-error: #f07575;
+        --color-error-bg: #3d2525;
+        --color-error-border: #5c3535;
+        --color-info: #6b9be8;
+        --color-info-light: #1a2540;
+
+        --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+        --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+        --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.35);
+        --shadow-popup: 0 0 0 1px rgba(255, 255, 255, 0.06),
+          0 4px 12px rgba(0, 0, 0, 0.4);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--color-text);
+        background: var(--color-bg);
+        background-color: var(--color-bg-solid);
+        min-height: 100vh;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 0;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        transition: background var(--transition-normal),
+          color var(--transition-normal);
+      }
+
+      /* Main container - Centered card style */
+      .container {
+        width: 100%;
+        max-width: 1200px;
+        background: var(--color-surface);
+        border-radius: var(--radius-xl);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04),
+          0 8px 24px rgba(0, 0, 0, 0.06);
+        overflow: hidden;
+        border: 1px solid var(--color-border-light);
+        transition: background var(--transition-normal),
+          box-shadow var(--transition-normal);
+      }
+
+      /* Footer */
+      .footer {
+        width: 100%;
+        text-align: center;
+        padding: 16px 24px;
+        margin-top: 20px;
+        color: var(--color-text-muted);
+        font-size: 12px;
+        flex-shrink: 0;
+      }
+
+      .footer p {
+        margin: 0;
+      }
+
+      .footer a {
+        color: var(--color-vokra);
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+      }
+
+      /* Header - Clean top bar */
+      .header {
+        background: var(--color-surface);
+        color: var(--color-text);
+        padding: 14px 24px;
+        border-bottom: 1px solid var(--color-border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        transition: background var(--transition-normal),
+          border-color var(--transition-normal);
+      }
+
+      .header h1 {
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .header p {
+        font-size: 12px;
+        color: var(--color-text-muted);
+        font-weight: 400;
+        margin-left: 12px;
+      }
+
+      .header-left {
+        display: flex;
+        align-items: center;
+      }
+
+      .theme-toggle {
+        background: transparent;
+        color: var(--color-text-secondary);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        padding: 6px 12px;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        font-family: inherit;
+      }
+
+      .theme-toggle:hover {
+        background: var(--color-surface-hover);
+        color: var(--color-text);
+      }
+
+      /* Header right actions */
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      /* Help icon and popover */
+      .help-container {
+        position: relative;
+      }
+
+      .help-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: 1px solid var(--color-border);
+        background: transparent;
+        color: var(--color-text-muted);
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: inherit;
+      }
+
+      .help-btn:hover {
+        background: var(--color-surface-hover);
+        color: var(--color-text);
+        border-color: var(--color-text-muted);
+      }
+
+      .help-popover {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        width: 340px;
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-popup);
+        padding: 20px;
+        z-index: 1000;
+        display: none;
+        animation: popoverFadeIn 0.15s ease;
+      }
+
+      .help-popover.show {
+        display: block;
+      }
+
+      @keyframes popoverFadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-4px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .help-popover h3 {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--color-text);
+        margin: 0 0 12px 0;
+      }
+
+      .help-popover p {
+        font-size: 13px;
+        color: var(--color-text-secondary);
+        line-height: 1.6;
+        margin: 0 0 12px 0;
+      }
+
+      .help-popover a {
+        color: var(--color-vokra);
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .help-popover a:hover {
+        text-decoration: underline;
+      }
+
+      .help-popover ul {
+        margin: 0;
+        padding-left: 18px;
+        font-size: 13px;
+        color: var(--color-text-secondary);
+        line-height: 1.7;
+      }
+
+      .help-popover li {
+        margin-bottom: 4px;
+      }
+
+      .help-section {
+        padding-top: 12px;
+        margin-top: 12px;
+        border-top: 1px solid var(--color-border);
+      }
+
+      .help-section-title {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--color-text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 8px;
+      }
+
+      /* Main layout - Two column */
+      .main-content {
+        display: grid;
+        grid-template-columns: minmax(360px, 440px) 1fr;
+        min-height: 720px;
+      }
+
+      .form-section {
+        padding: var(--space-xl);
+        background: var(--color-surface-alt);
+        border-right: 1px solid var(--color-border);
+        overflow-y: auto;
+        max-height: 720px;
+        transition: background var(--transition-normal),
+          border-color var(--transition-normal);
+      }
+
+      .output-section {
+        padding: 0;
+        background: var(--color-surface);
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        transition: background var(--transition-normal);
+      }
+
+      .output-content {
+        flex: 1;
+        padding: var(--space-xl);
+        padding-bottom: 100px;
+        overflow-y: auto;
+        max-height: 720px;
+      }
+
+      .output-actions {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: var(--space-lg) var(--space-xl);
+        background: linear-gradient(
+          to top,
+          var(--color-surface) 70%,
+          transparent
+        );
+        border-top: 1px solid var(--color-border-light);
+        backdrop-filter: blur(8px);
+        z-index: 10;
+      }
+
+      /* Section titles - Notion style uppercase label */
+      .section-title {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--color-text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: var(--space-lg);
+        padding-bottom: var(--space-sm);
+        border-bottom: 1px solid var(--color-border);
+      }
+
+      /* Form groups */
+      .form-group {
+        margin-bottom: var(--space-lg);
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 500;
+        color: var(--color-text);
+        font-size: 13px;
+        transition: color var(--transition-normal);
+      }
+
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-sm);
+        font-size: 14px;
+        font-family: inherit;
+        transition: all var(--transition-fast);
+        background: var(--color-surface);
+        color: var(--color-text);
+      }
+
+      .form-group select {
+        appearance: none;
+        padding-right: 36px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b6b6b' d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        cursor: pointer;
+      }
+
+      .form-group input::placeholder {
+        color: var(--color-text-placeholder);
+      }
+
+      .form-group input:hover,
+      .form-group select:hover {
+        border-color: var(--color-text-muted);
+      }
+
+      .form-group input:focus,
+      .form-group select:focus {
+        outline: none;
+        border-color: var(--color-accent);
+        box-shadow: 0 0 0 3px var(--color-accent-light);
+      }
+
+      /* Checkbox styling - Asana/Notion style */
+      .checkbox-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: var(--space-sm);
+      }
+
+      .checkbox-item {
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        background: var(--color-surface);
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--color-border);
+        transition: all var(--transition-fast);
+        cursor: pointer;
+      }
+
+      .checkbox-item:hover {
+        background: var(--color-surface-hover);
+        border-color: var(--color-text-muted);
+      }
+
+      .checkbox-item input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        margin-right: 10px;
+        accent-color: var(--color-vokra);
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+
+      .checkbox-item span {
+        font-size: 13px;
+        color: var(--color-text-secondary);
+        transition: color var(--transition-fast);
+      }
+
+      .checkbox-item:hover span {
+        color: var(--color-text);
+      }
+
+      .checkbox-item input[type="checkbox"]:checked + span {
+        color: var(--color-text);
+        font-weight: 500;
+      }
+
+      /* Buttons - Notion/Asana style */
+      .toolbar {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .generate-btn,
+      .reset-btn {
+        flex: 1 1 120px;
+        min-width: 120px;
+        padding: 8px 16px;
+        border: none;
+        border-radius: var(--radius-sm);
+        font-size: 13px;
+        font-weight: 500;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all var(--transition-fast);
+      }
+
+      .generate-btn {
+        background: var(--color-vokra);
+        color: #fff;
+      }
+
+      .generate-btn:hover {
+        background: var(--color-vokra-hover);
+      }
+
+      .reset-btn {
+        background: var(--color-surface);
+        color: var(--color-text-secondary);
+        border: 1px solid var(--color-border);
+      }
+
+      .reset-btn:hover {
+        background: var(--color-surface-hover);
+        color: var(--color-text);
+        border-color: var(--color-text-muted);
+      }
+
+      /* Add cat button - Notion style text button */
+      .add-cat-btn {
+        background: transparent;
+        color: var(--color-text-secondary);
+        border: 1px dashed var(--color-border);
+        border-radius: var(--radius-sm);
+        padding: 10px 16px;
+        font-size: 13px;
+        font-weight: 500;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        margin-bottom: var(--space-lg);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        width: 100%;
+        justify-content: center;
+      }
+
+      .add-cat-btn:hover {
+        background: var(--color-surface-hover);
+        border-color: var(--color-text-muted);
+        color: var(--color-text);
+      }
+
+      /* Cat section cards - Notion database row style */
+      .cat-section {
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        padding: var(--space-lg);
+        margin-bottom: var(--space-lg);
+        transition: all var(--transition-fast);
+      }
+
+      .cat-section:hover {
+        box-shadow: var(--shadow-sm);
+      }
+
+      .cat-section h3 {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--color-text);
+        margin-bottom: var(--space-md);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: var(--space-sm);
+        border-bottom: 1px solid var(--color-border);
+      }
+
+      .remove-cat-btn {
+        background: transparent;
+        color: var(--color-text-muted);
+        border: none;
+        padding: 4px 8px;
+        font-size: 12px;
+        font-weight: 500;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        border-radius: var(--radius-xs);
+      }
+
+      .remove-cat-btn:hover {
+        background: var(--color-error-bg);
+        color: var(--color-error);
+      }
+
+      /* Same-as checkbox helper */
+      .same-as-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: var(--space-sm);
+        padding: 6px 10px;
+        background: var(--color-info-light);
+        border-radius: var(--radius-sm);
+        font-size: 12px;
+        color: var(--color-info);
+      }
+
+      .same-as-checkbox input[type="checkbox"] {
+        width: 14px;
+        height: 14px;
+        margin: 0;
+        accent-color: var(--color-info);
+      }
+
+      /* Microchip section */
+      .search-microchip-btn {
+        background: var(--color-success);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius-sm);
+        padding: 8px 12px;
+        font-size: 12px;
+        font-weight: 500;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        white-space: nowrap;
+      }
+
+      .search-microchip-btn:hover:not(:disabled) {
+        opacity: 0.9;
+      }
+
+      .search-microchip-btn:disabled {
+        background: var(--color-text-muted);
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+
+      .microchip-companies {
+        display: none;
+        margin-top: var(--space-md);
+        padding: var(--space-md);
+        background: var(--color-surface-alt);
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--color-border);
+      }
+
+      .microchip-companies.show {
+        display: block;
+      }
+
+      .microchip-companies > label {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--color-text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        display: block;
+        margin-bottom: var(--space-sm);
+      }
+
+      .microchip-company-options {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .microchip-company-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        background: var(--color-surface);
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--color-border);
+        transition: all var(--transition-fast);
+      }
+
+      .microchip-company-item:hover {
+        border-color: var(--color-text-muted);
+      }
+
+      .microchip-company-item input[type="checkbox"],
+      .microchip-company-item input[type="radio"] {
+        width: 14px;
+        height: 14px;
+        margin: 0;
+        accent-color: var(--color-primary);
+      }
+
+      .microchip-company-item span {
+        font-size: 13px;
+        color: var(--color-text-secondary);
+      }
+
+      .microchip-company-item input[type="text"] {
+        flex: 1;
+        padding: 4px 8px;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-xs);
+        font-size: 13px;
+        font-family: inherit;
+        margin-left: 4px;
+        background: var(--color-surface);
+        color: var(--color-text);
+      }
+
+      .microchip-company-item input[type="text"]:focus {
+        border-color: var(--color-accent);
+        outline: none;
+      }
+
+      /* Tattoo details */
+      .tattoo-link {
+        margin: var(--space-sm) 0 0 0;
+        padding: var(--space-sm) var(--space-md);
+        background: var(--color-warning-bg);
+        border: 1px solid var(--color-warning-border);
+        border-radius: var(--radius-sm);
+      }
+
+      .tattoo-link a {
+        color: var(--color-warning-text);
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      .tattoo-link a:hover {
+        text-decoration: underline;
+      }
+
+      .tattoo-details {
+        display: none;
+        margin-top: var(--space-sm);
+        padding: var(--space-md);
+        background: var(--color-surface-alt);
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--color-border);
+      }
+
+      .tattoo-details.show {
+        display: block;
+      }
+
+      .tattoo-details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .tattoo-detail-item {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .tattoo-detail-item label {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--color-text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+      }
+
+      .tattoo-detail-item input {
+        padding: 8px 10px;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-sm);
+        font-size: 13px;
+        font-family: inherit;
+        background: var(--color-surface);
+        color: var(--color-text);
+      }
+
+      .tattoo-detail-item input:focus {
+        border-color: var(--color-accent);
+        outline: none;
+      }
+
+      /* VOKRA Warning - Notion callout style */
+      .vokra-warning {
+        background: var(--color-warning-bg);
+        border: 1px solid var(--color-warning-border);
+        border-radius: var(--radius-sm);
+        padding: var(--space-md);
+        margin-top: var(--space-sm);
+        color: var(--color-warning-text);
+        font-size: 13px;
+        display: none;
+        line-height: 1.5;
+      }
+
+      .vokra-warning.show {
+        display: block;
+      }
+
+      .vokra-warning strong {
+        color: var(--color-error);
+      }
+
+      .vokra-warning a {
+        color: var(--color-warning-text);
+        font-weight: 600;
+      }
+
+      /* Output section - Clean reading area */
+      .output {
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        padding: var(--space-xl);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 14px;
+        line-height: 1.7;
+        min-height: 400px;
+        color: var(--color-text);
+        transition: all var(--transition-normal);
+      }
+
+      .output p {
+        margin: 0 0 12px 0;
+      }
+
+      .output strong {
+        font-weight: 600;
+        color: var(--color-text);
+      }
+
+      .output .purple-bold {
+        font-weight: 600;
+        color: var(--color-highlight);
+      }
+
+      /* Copy buttons - Asana button style */
+      .button-group {
+        display: flex;
+        gap: 8px;
+        margin-top: var(--space-md);
+      }
+
+      .copy-btn {
+        flex: 1;
+        padding: 8px 16px;
+        border-radius: var(--radius-sm);
+        font-size: 13px;
+        font-weight: 500;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+
+      .copy-btn-primary {
+        background: var(--color-vokra);
+        color: #fff;
+        border: none;
+      }
+
+      .copy-btn-primary:hover {
+        background: var(--color-vokra-hover);
+      }
+
+      .copy-btn-secondary {
+        background: transparent;
+        color: var(--color-text-secondary);
+        border: 1px solid var(--color-border);
+      }
+
+      .copy-btn-secondary:hover {
+        background: var(--color-surface-hover);
+        border-color: var(--color-text-muted);
+        color: var(--color-text);
+      }
+
+      .copy-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .copy-success {
+        color: var(--color-success);
+        text-align: center;
+        margin-top: var(--space-sm);
+        font-weight: 500;
+        font-size: 12px;
+        opacity: 0;
+        transition: opacity var(--transition-normal);
+      }
+
+      .copy-success.show {
+        opacity: 1;
+      }
+
+      /* Toast notifications - Top right slide-in style */
+      .toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-end;
+        pointer-events: none;
+      }
+
+      .toast {
+        background: var(--color-surface);
+        color: var(--color-text);
+        padding: 12px 20px;
+        border-radius: var(--radius-lg);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15),
+          0 0 0 1px var(--color-border);
+        font-size: 13px;
+        font-weight: 500;
+        max-width: 360px;
+        pointer-events: auto;
+        transform: translateX(120%);
+        opacity: 0;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+          opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .toast.show {
+        transform: translateX(0);
+        opacity: 1;
+      }
+
+      .toast-add {
+        border-left: 4px solid var(--color-success);
+      }
+
+      .toast-remove {
+        border-left: 4px solid var(--color-error);
+      }
+
+      .toast-warning {
+        border-left: 4px solid var(--color-warning);
+      }
+
+      .toast-info {
+        border-left: 4px solid var(--color-info);
+      }
+
+      .toast-success {
+        border-left: 4px solid var(--color-success);
+      }
+
+      .toast-error {
+        border-left: 4px solid var(--color-error);
+      }
+
+      /* Input error state */
+      .input-error {
+        border-color: var(--color-error) !important;
+        box-shadow: 0 0 0 2px var(--color-error-bg) !important;
+      }
+
+      /* Date grid inputs */
+      .date-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1.3fr;
+        gap: 6px;
+      }
+
+      .date-grid input,
+      .date-grid select {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-sm);
+        font-size: 14px;
+        font-family: inherit;
+        background: var(--color-surface);
+        color: var(--color-text);
+        transition: all var(--transition-fast);
+        text-align: center;
+      }
+
+      .date-grid select {
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b6b6b' d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 8px center;
+        padding-right: 24px;
+      }
+
+      .date-grid select option {
+        padding: 4px 8px;
+      }
+
+      .date-grid input:focus,
+      .date-grid select:focus {
+        outline: none;
+        border-color: var(--color-accent);
+        box-shadow: 0 0 0 2px var(--color-accent-light);
+      }
+
+      .date-grid input:disabled,
+      .date-grid select:disabled {
+        background: var(--color-surface-alt);
+        color: var(--color-text-muted);
+        cursor: not-allowed;
+      }
+
+      .date-grid.input-error input,
+      .date-grid.input-error select {
+        border-color: var(--color-error) !important;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 900px) {
+        body {
+          padding: 12px;
+        }
+
+        .container {
+          border-radius: var(--radius-lg);
+        }
+
+        .main-content {
+          grid-template-columns: 1fr;
+          min-height: auto;
+        }
+
+        .form-section {
+          border-right: none;
+          border-bottom: 1px solid var(--color-border);
+          max-height: none;
+        }
+
+        .output-section {
+          min-height: 500px;
+        }
+
+        .output-content {
+          max-height: none;
+          padding-bottom: 120px;
+        }
+
+        .output-actions {
+          position: sticky;
+        }
+
+        .header {
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+
+        .header p {
+          display: none;
+        }
+
+        .button-group {
+          flex-direction: column;
+        }
+
+        .tattoo-details-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .checkbox-group {
+          flex-direction: column;
+        }
+      }
+
+      /* Scrollbar - Notion style thin scrollbar */
+      .form-section::-webkit-scrollbar,
+      .output-content::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .form-section::-webkit-scrollbar-track,
+      .output-content::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .form-section::-webkit-scrollbar-thumb,
+      .output-content::-webkit-scrollbar-thumb {
+        background: var(--color-border);
+        border-radius: 3px;
+      }
+
+      .form-section::-webkit-scrollbar-thumb:hover,
+      .output-content::-webkit-scrollbar-thumb:hover {
+        background: var(--color-text-muted);
+      }
+
+      /* Focus visible for accessibility */
+      :focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 2px;
+      }
+
+      button:focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 2px;
+      }
+    </style>
+
+    <!-- Output styling - keeps colors in copied content -->
+    <style>
+      #output,
+      #output *,
+      .output,
+      .output * {
+        background: transparent !important;
+        background-color: transparent !important;
+      }
+
+      /* Floating Buttons Container */
+      .floating-btns {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        display: flex;
+        flex-direction: row;
+        gap: 12px;
+        z-index: 100;
+      }
+
+      /* Common floating button style */
+      .floating-btn {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        box-shadow: var(--shadow-md);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        transition: all var(--transition-normal);
+        position: relative;
+      }
+
+      .floating-btn:hover {
+        transform: scale(1.08);
+        box-shadow: var(--shadow-lg);
+        background: var(--color-vokra-light);
+        border-color: var(--color-vokra);
+      }
+
+      /* Meditation Button */
+      .meditation-btn:hover::after {
+        content: "Paws for a min";
+        position: absolute;
+        bottom: 100%;
+        right: 0;
+        margin-bottom: 8px;
+        padding: 6px 12px;
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--color-text);
+        white-space: nowrap;
+        box-shadow: var(--shadow-sm);
+      }
+
+      /* Music Button */
+      .music-btn:hover::after {
+        content: "Focus Music";
+        position: absolute;
+        bottom: 100%;
+        right: 0;
+        margin-bottom: 8px;
+        padding: 6px 12px;
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--color-text);
+        white-space: nowrap;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .music-btn.playing {
+        background: var(--color-vokra-light);
+        border-color: var(--color-vokra);
+        animation: pulse-glow 2s ease-in-out infinite;
+      }
+
+      @keyframes pulse-glow {
+        0%,
+        100% {
+          box-shadow: var(--shadow-md), 0 0 0 0 rgba(124, 92, 191, 0.4);
+        }
+        50% {
+          box-shadow: var(--shadow-md), 0 0 0 8px rgba(124, 92, 191, 0);
+        }
+      }
+
+      /* Rest Overlay */
+      .rest-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        z-index: 9999;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 24px;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
+
+      .rest-overlay.show {
+        display: flex;
+        opacity: 1;
+      }
+
+      body.dark .rest-overlay {
+        background: rgba(0, 0, 0, 0.3);
+      }
+
+      .rest-message {
+        text-align: center;
+        color: var(--color-text);
+      }
+
+      .rest-message h2 {
+        font-size: 32px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--color-vokra);
+        font-family: "Libre Baskerville";
+      }
+
+      .rest-message p {
+        font-size: 18px;
+        color: var(--color-text-secondary);
+      }
+
+      .rest-emoji {
+        width: 120px;
+        height: 120px;
+        animation: gentle-bounce 2s ease-in-out infinite;
+      }
+
+      .rest-emoji img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      /* Fallback emoji style when no image is set */
+      .rest-emoji-fallback {
+        font-size: 64px;
+        line-height: 120px;
+        text-align: center;
+      }
+
+      @keyframes gentle-bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .rest-close-btn {
+        padding: 12px 32px;
+        background: var(--color-vokra);
+        color: white;
+        border: none;
+        border-radius: var(--radius-lg);
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all var(--transition-normal);
+      }
+
+      .rest-close-btn:hover {
+        background: var(--color-vokra-hover);
+        transform: scale(1.02);
+      }
+      
+      /* ============================================
+         TATTOO LOOKUP POPOVER STYLES
+         ============================================ */
+      .tattoo-lookup-popover {
+        position: fixed;
+        width: 320px;
+        background: #ffffff;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-popup);
+        z-index: 10000;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-8px);
+        transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+      }
+      
+      body.dark .tattoo-lookup-popover {
+        background: #2a2a2a;
+      }
+      
+      .tattoo-lookup-popover.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+      
+      .tattoo-popover-header {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--color-border);
+        background: #ffffff;
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      }
+      
+      body.dark .tattoo-popover-header {
+        background: #2a2a2a;
+      }
+      
+      .tattoo-popover-header .facility-icon {
+        font-size: 24px;
+        flex-shrink: 0;
+      }
+      
+      .tattoo-popover-header .header-content {
+        flex: 1;
+        min-width: 0;
+      }
+      
+      .tattoo-popover-header .facility-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--color-text);
+        margin: 0 0 2px 0;
+      }
+      
+      .tattoo-popover-header .facility-location {
+        font-size: 12px;
+        color: var(--color-text-secondary);
+        margin: 0;
+      }
+      
+      .tattoo-popover-header .close-btn {
+        background: transparent;
+        border: none;
+        color: var(--color-text-muted);
+        cursor: pointer;
+        padding: 4px 8px;
+        font-size: 18px;
+        font-weight: 400;
+        font-family: inherit;
+        line-height: 1;
+        transition: color var(--transition-fast);
+        margin-left: auto;
+        flex-shrink: 0;
+        border-radius: var(--radius-sm);
+      }
+      
+      .tattoo-popover-header .close-btn:hover {
+        color: var(--color-text);
+        background: var(--color-surface-hover);
+      }
+      
+      .tattoo-popover-body {
+        padding: 14px 16px;
+        background: #ffffff;
+      }
+      
+      body.dark .tattoo-popover-body {
+        background: #2a2a2a;
+      }
+      
+      .tattoo-popover-body .detail-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        font-size: 13px;
+      }
+      
+      .tattoo-popover-body .detail-label {
+        color: var(--color-text-muted);
+      }
+      
+      .tattoo-popover-body .detail-value {
+        color: var(--color-text);
+        font-weight: 500;
+      }
+      
+      .tattoo-popover-body .detail-value.purple {
+        color: var(--color-vokra);
+      }
+      
+      .tattoo-badge {
+        display: inline-block;
+        padding: 3px 8px;
+        border-radius: var(--radius-xs);
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+      }
+      
+      .tattoo-badge-closed {
+        background: var(--color-error-bg);
+        color: var(--color-error);
+        border: 1px solid var(--color-error-border);
+      }
+      
+      .tattoo-badge-island {
+        background: var(--color-info-light);
+        color: var(--color-info);
+        border: 1px solid #c3d7f5;
+      }
+      
+      .tattoo-popover-note {
+        margin: 10px 0 0 0;
+        padding: 10px 12px;
+        background: var(--color-warning-bg);
+        border: 1px solid var(--color-warning-border);
+        border-radius: var(--radius-sm);
+        font-size: 12px;
+        color: var(--color-warning-text);
+        line-height: 1.5;
+      }
+      
+      .tattoo-popover-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border-top: 1px solid var(--color-border);
+        background: #ffffff;
+        border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+      }
+      
+      body.dark .tattoo-popover-actions {
+        background: #2a2a2a;
+      }
+      
+      .tattoo-action-btn {
+        padding: 8px 14px;
+        border-radius: var(--radius-sm);
+        font-size: 13px;
+        font-weight: 500;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+      
+      .tattoo-action-btn-primary {
+        background: var(--color-vokra);
+        color: white;
+        border: none;
+      }
+      
+      .tattoo-action-btn-primary:hover {
+        background: var(--color-vokra-hover);
+      }
+      
+      .tattoo-action-btn-secondary {
+        background: transparent;
+        color: var(--color-text-secondary);
+        border: none;
+        padding: 8px 4px;
+        margin-left: auto;
+      }
+      
+      .tattoo-action-btn-secondary:hover {
+        color: var(--color-vokra);
+      }
+      
+      .tattoo-popover-error {
+        padding: 16px;
+        text-align: center;
+        background: #ffffff;
+      }
+      
+      body.dark .tattoo-popover-error {
+        background: #2a2a2a;
+      }
+      
+      .tattoo-popover-error .error-icon {
+        font-size: 32px;
+        margin-bottom: 8px;
+      }
+      
+      .tattoo-popover-error .error-message {
+        color: var(--color-text-secondary);
+        font-size: 13px;
+        margin: 0;
+      }
+      
+      .tattoo-popover-error .error-code {
+        color: var(--color-text-muted);
+        font-size: 12px;
+        font-family: 'SF Mono', Monaco, monospace;
+        margin-top: 6px;
+      }
+      
+      /* Responsive adjustments */
+      @media (max-width: 600px) {
+        .tattoo-lookup-popover {
+          width: calc(100vw - 32px);
+          left: 16px !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="header-left">
+          <h1>
+            <img src="./src/kitty.png" width="20em" height="20em" /> VOKRA
+            Adoption Follow-up
+          </h1>
+          <p>v2.9.1</p>
+        </div>
+        <div class="header-right">
+          <div class="help-container">
+            <button
+              class="help-btn"
+              onclick="toggleHelpPopover()"
+              aria-label="Help">
+              ?
+            </button>
+            <div class="help-popover" id="helpPopover">
+              <h3>Getting Started</h3>
+              <p>
+                This generator works best with the
+                <a
+                  href="https://drive.google.com/drive/folders/1zGNpbM6LJMrzpcEVNZvKjrYwVKonhZgc?usp=sharing"
+                  target="_blank"
+                  rel="noopener"
+                  style="font-weight: 600"
+                  >VOKRA Adoption Helper Extension</a
+                >. Install the browser extension to automatically extract cat
+                and adopter information from Shelterluv.
+              </p>
+              <p>
+                <a
+                  href="https://docs.google.com/document/d/1uOWyKtWTt_Su7LV__eZlQT2wzLPmXPEb1M5YPDRltEY/edit?tab=t.0#heading=h.wew1uu8sjgpy" target="_blank"
+                  style="font-weight: 600">
+                  How to install and use the Extension
+                </a>
+              </p>
+
+              <div class="help-section">
+                <div class="help-section-title">Quick Workflow</div>
+                <ul>
+                  <li>Open a cat's profile in Shelterluv</li>
+                  <li>Click the extension to extract data</li>
+                  <li>Copy the JSON and paste it here</li>
+                  <li>Review and adjust fields as needed</li>
+                  <li>Click "Generate Email" and copy the result</li>
+                </ul>
+              </div>
+
+              <div class="help-section">
+                <div class="help-section-title">Tips</div>
+                <ul>
+                  <li>Always verify the extracted data before sending</li>
+                  <li>
+                    If hospital shows "VOKRA", look up the correct name in BC
+                    Pet Registry Tattoo Code
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <button id="themeToggle" class="theme-toggle" onclick="toggleTheme()">
+            🌙 Dark Mode
+          </button>
+        </div>
+      </div>
+
+      <div class="main-content">
+        <div class="form-section">
+          <!-- Optional Import from Extension -->
+          <div class="import-toggle-section" style="margin-bottom: 20px">
+            <button
+              id="toggleImportBtn"
+              onclick="toggleImportSection()"
+              style="
+                width: 100%;
+                padding: 10px 14px;
+                background: var(--color-surface);
+                color: var(--color-text-secondary);
+                border: 1px dashed var(--color-border);
+                border-radius: var(--radius-sm);
+                font-size: 13px;
+                font-weight: 500;
+                font-family: inherit;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                transition: all 0.15s ease;
+              "
+              onmouseover="this.style.background='var(--color-surface-hover)'; this.style.borderColor='var(--color-text-muted)'; this.style.color='var(--color-text)'"
+              onmouseout="this.style.background='var(--color-surface)'; this.style.borderColor='var(--color-border)'; this.style.color='var(--color-text-secondary)'">
+              <span>Import from Extension</span>
+              <span id="toggleImportIcon" style="font-size: 10px">▼</span>
+            </button>
+
+            <div
+              id="importSection"
+              style="
+                display: none;
+                margin-top: 12px;
+                padding: 16px;
+                background: var(--color-surface);
+                border: 1px solid var(--color-border);
+                border-radius: var(--radius-md);
+              ">
+              <p
+                style="
+                  margin: 0 0 12px 0;
+                  color: var(--color-text-secondary);
+                  font-size: 12px;
+                  line-height: 1.5;
+                ">
+                Paste JSON data from the extension to auto-fill fields:
+              </p>
+              <textarea
+                id="importBox"
+                placeholder='{"catName": "Fluffy", "catGender": "Male", ...}'
+                style="
+                  width: 100%;
+                  min-height: 80px;
+                  padding: 10px 12px;
+                  border: 1px solid var(--color-border);
+                  border-radius: var(--radius-sm);
+                  font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+                  font-size: 12px;
+                  background: var(--color-surface-alt);
+                  color: var(--color-text);
+                  resize: vertical;
+                  margin-bottom: 12px;
+                "></textarea>
+
+              <div style="display: flex; gap: 8px">
+                <button
+                  onclick="manualImport()"
+                  class="generate-btn"
+                  style="flex: 1; margin: 0">
+                  Import Data
+                </button>
+                <button
+                  onclick="clearImportBox()"
+                  class="reset-btn"
+                  style="margin: 0; flex: 0 0 auto; padding: 8px 12px">
+                  Clear
+                </button>
+              </div>
+
+              <div
+                id="importStatus"
+                style="
+                  margin-top: 12px;
+                  padding: 10px;
+                  border-radius: 6px;
+                  font-size: 14px;
+                  display: none;
+                "></div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="adopterName"
+              >Adopter First Name:
+              <span style="color: var(--color-error)">*</span></label
+            >
+            <input
+              type="text"
+              id="adopterName"
+              required
+              placeholder="Enter adopter first name"
+              oninput="generateEmail();" />
+          </div>
+
+          <div class="form-group">
+            <label for="adopterEmail">Adopter Email:</label>
+            <input
+              type="email"
+              id="adopterEmail"
+              placeholder="Enter adopter email address"
+              oninput="generateEmail();" />
+          </div>
+
+          <div class="form-group">
+            <label for="coAdopterName">Co-Adopter Name: <span style="color: var(--color-text-muted); font-weight: 400;">(optional)</span></label>
+            <input
+              type="text"
+              id="coAdopterName"
+              placeholder="Partner/co-adopter first name"
+              oninput="generateEmail();" />
+          </div>
+
+          <div class="form-group">
+            <label for="coAdopterEmail">Co-Adopter Email: <span style="color: var(--color-text-muted); font-weight: 400;">(optional)</span></label>
+            <input
+              type="email"
+              id="coAdopterEmail"
+              placeholder="Partner/co-adopter email"
+              oninput="generateEmail();" />
+          </div>
+
+          <button class="add-cat-btn" onclick="addCat()">
+            + Add Another Cat
+          </button>
+          <div id="catsContainer"></div>
+
+          <div class="form-group">
+            <label for="pacuDate"
+              >PACU Due Date:
+              <span style="color: var(--color-error)">*</span></label
+            >
+            <input type="date" id="pacuDate" onchange="generateEmail();"
+            oninput="generateEmail();" / required>
+          </div>
+
+
+          <div class="form-group">
+            <label for="vaccineDate">Next Vaccine Due:</label>
+            <input
+              type="date"
+              id="vaccineDate"
+              onchange="generateEmail();"
+              oninput="generateEmail();" />
+          </div>
+                    <h2 class="section-title">Email Content Options</h2>
+          <div class="form-group">
+            <label>Include Sections:</label>
+            <div class="checkbox-group">
+              <div class="checkbox-item">
+                <input
+                  type="checkbox"
+                  id="healthSection"
+                  onchange="generateEmail();"
+                  checked />
+                <span>Health Reminders</span>
+              </div>
+              <div class="checkbox-item">
+                <input
+                  type="checkbox"
+                  id="identificationSection"
+                  onchange="generateEmail();"
+                  checked />
+                <span>Identification Info</span>
+              </div>
+              <div class="checkbox-item">
+                <input
+                  type="checkbox"
+                  id="insuranceSection"
+                  onchange="generateEmail();"
+                  checked />
+                <span>Insurance Info</span>
+              </div>
+              <div class="checkbox-item">
+                <input
+                  type="checkbox"
+                  id="facebookSection"
+                  onchange="generateEmail();"
+                  checked />
+                <span>Facebook Group</span>
+              </div>
+            </div>
+          </div>
+          <div class="toolbar">
+            <button class="reset-btn" onclick="resetForm()">↺ Reset</button>
+            <button class="generate-btn" onclick="validateAndGenerate()">
+              Generate Email
+            </button>
+          </div>
+        </div>
+
+        <div class="output-section">
+          <div class="output-content">
+            <h2 class="section-title">Generated Email</h2>
+            <div class="output" id="output">
+              Click "Generate Email" to create your personalized adoption
+              follow-up email...
+            </div>
+          </div>
+          <div class="output-actions">
+            <div class="button-group">
+              <button
+                class="copy-btn copy-btn-secondary"
+                onclick="copyEmailAddress()"
+                id="copyEmailBtn">
+                Copy Email Address
+              </button>
+              <button
+                class="copy-btn copy-btn-primary"
+                onclick="copyToClipboard()">
+                Copy Email
+              </button>
+            </div>
+            <div class="copy-success" id="copySuccess">
+              Email copied to clipboard! ✅
+            </div>
+            <div class="copy-success" id="emailCopySuccess">
+              Email address copied! ✅
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast container -->
+    <div
+      id="toastContainer"
+      class="toast-container"
+      aria-live="polite"
+      aria-atomic="true"></div>
+
+    <script>
+      let catCount = 0;
+
+      /* ---------- Theme Toggle (persist in localStorage) ---------- */
+      function applyThemeFromStorage() {
+        const saved = localStorage.getItem("vokra_theme");
+        const btn = document.getElementById("themeToggle");
+        if (saved === "dark") {
+          document.body.classList.add("dark");
+          if (btn) btn.textContent = "☀️ Light Mode";
+        } else {
+          document.body.classList.remove("dark");
+          if (btn) btn.textContent = "🌙 Dark Mode";
+        }
+      }
+      function toggleTheme() {
+        document.body.classList.toggle("dark");
+        const isDark = document.body.classList.contains("dark");
+        localStorage.setItem("vokra_theme", isDark ? "dark" : "light");
+        const btn = document.getElementById("themeToggle");
+        if (btn) btn.textContent = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
+      }
+
+      // Help popover toggle
+      function toggleHelpPopover() {
+        const popover = document.getElementById("helpPopover");
+        if (popover) {
+          popover.classList.toggle("show");
+        }
+      }
+
+      // Close popover when clicking outside
+      document.addEventListener("click", function (e) {
+        const popover = document.getElementById("helpPopover");
+        const helpContainer = e.target.closest(".help-container");
+        if (popover && popover.classList.contains("show") && !helpContainer) {
+          popover.classList.remove("show");
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", applyThemeFromStorage);
+      document.addEventListener("DOMContentLoaded", function () {
+        var form = document.querySelector(".form-section");
+        if (form) {
+          form.addEventListener("input", function (e) {
+            try {
+              generateEmail();
+            } catch (_e) {}
+          });
+          form.addEventListener("change", function (e) {
+            try {
+              generateEmail();
+            } catch (_e) {}
+          });
+        }
+      });
+
+      /* ---------- Reset Form ---------- */
+      function resetForm() {
+        // Text inputs
+        const adopter = document.getElementById("adopterName");
+        if (adopter) adopter.value = "";
+
+        const adopterEmail = document.getElementById("adopterEmail");
+        if (adopterEmail) adopterEmail.value = "";
+
+        const coAdopter = document.getElementById("coAdopterName");
+        if (coAdopter) coAdopter.value = "";
+
+        const coAdopterEmail = document.getElementById("coAdopterEmail");
+        if (coAdopterEmail) coAdopterEmail.value = "";
+
+        // Date inputs - clear hidden input AND sync UI
+        const pacu = document.getElementById("pacuDate");
+        if (pacu) {
+          pacu.value = "";
+          // Sync the segmented date UI if it exists
+          if (typeof window.updateDateUIFromHidden === "function") {
+            window.updateDateUIFromHidden("pacuDate");
+          }
+        }
+
+        const vaccine = document.getElementById("vaccineDate");
+        if (vaccine) {
+          vaccine.value = "";
+          // Sync the segmented date UI if it exists
+          if (typeof window.updateDateUIFromHidden === "function") {
+            window.updateDateUIFromHidden("vaccineDate");
+          }
+        }
+
+        // Section toggles back to checked
+        const sectionIds = [
+          "healthSection",
+          "identificationSection",
+          "insuranceSection",
+          "facebookSection",
+        ];
+        sectionIds.forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) el.checked = true;
+        });
+
+        // Reset cats
+        const container = document.getElementById("catsContainer");
+        if (container) {
+          container.innerHTML = "";
+        }
+        // Reset global counter then add one cat silently (avoid toast)
+        if (typeof catCount !== "undefined") {
+          catCount = 0;
+        }
+        if (typeof addCat === "function") {
+          try {
+            addCat(true);
+          } catch (e) {
+            addCat();
+          }
+        }
+
+        // Reset output
+        const out = document.getElementById("output");
+        if (out) {
+          out.innerHTML =
+            'Click "Generate Email" to create your personalized adoption follow-up email...';
+        }
+        const copy = document.getElementById("copySuccess");
+        if (copy) {
+          copy.classList.remove("show");
+        }
+      }
+
+      /* ---------- Toast ---------- */
+      function showToast(message, variant = "add") {
+        const container = document.getElementById("toastContainer");
+        if (!container) return;
+        const toast = document.createElement("div");
+        toast.className = `toast toast-${variant}`;
+        toast.textContent = message;
+        container.appendChild(toast);
+        // Trigger reflow for animation
+        void toast.offsetWidth;
+        requestAnimationFrame(() => toast.classList.add("show"));
+        setTimeout(() => {
+          toast.classList.remove("show");
+          // Wait for slide-out animation to complete (0.4s)
+          setTimeout(() => toast.remove(), 450);
+        }, 4000);
+      }
+
+      /* ---------- Utils ---------- */
+      function startOfDay(d) {
+        const x = new Date(d);
+        x.setHours(0, 0, 0, 0);
+        return x;
+      }
+      function todayStart() {
+        const t = new Date();
+        t.setHours(0, 0, 0, 0);
+        return t;
+      }
+      function compareToToday(dateStr) {
+        if (!dateStr) return null;
+        const d = startOfDay(dateStr + "T00:00:00").getTime();
+        const t = todayStart().getTime();
+        return d < t ? -1 : d > t ? 1 : 0;
+      }
+      function addMonths(dateObj, n) {
+        const d = new Date(dateObj);
+        const day = d.getDate();
+        d.setMonth(d.getMonth() + n);
+        if (d.getDate() !== day) {
+          d.setDate(0);
+        }
+        return d;
+      }
+      function addDays(dateObj, n) {
+        const d = new Date(dateObj);
+        d.setDate(d.getDate() + n);
+        return d;
+      }
+      function monthsBetween(dob, ref) {
+        let m =
+          (ref.getFullYear() - dob.getFullYear()) * 12 +
+          (ref.getMonth() - dob.getMonth());
+        if (ref.getDate() < dob.getDate()) m--;
+        return Math.max(0, m);
+      }
+      function formatDate(dateString) {
+        if (!dateString) return "[Date]";
+        const date = new Date(dateString + "T00:00:00");
+        const months = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ];
+        const day = date.getDate();
+        const month = months[date.getMonth()];
+        const suffix =
+          day === 1 || day === 21 || day === 31
+            ? "st"
+            : day === 2 || day === 22
+            ? "nd"
+            : day === 3 || day === 23
+            ? "rd"
+            : "th";
+        return `${month} ${day}${suffix}`;
+      }
+      function absDays(a, b) {
+        const A = startOfDay(a),
+          B = startOfDay(b);
+        return Math.round(Math.abs((B - A) / (1000 * 60 * 60 * 24)));
+      }
+
+      /* ---------- Possessives & Procedures ---------- */
+      function joinPossessive(names) {
+        const arr = names.filter(Boolean).map((s) => s.trim());
+        if (arr.length === 0) return "your cats'";
+        if (arr.length === 1) return `${arr[0]}'s`;
+        if (arr.length === 2) return `${arr[0]} and ${arr[1]}'s`;
+        const head = arr.slice(0, -1).join(", ");
+        return `${head}, and ${arr[arr.length - 1]}'s`;
+      }
+      function separatePossessive(names) {
+        const arr = names.filter(Boolean).map((s) => s.trim());
+        if (arr.length === 0) return "your cats'";
+        if (arr.length === 1) return `${arr[0]}'s`;
+        if (arr.length === 2) return `${arr[0]}'s and ${arr[1]}'s`;
+        const head = arr
+          .slice(0, -1)
+          .map((n) => `${n}'s`)
+          .join(", ");
+        return `${head}, and ${arr[arr.length - 1]}'s`;
+      }
+      function procedureForGroupByGender(group) {
+        const gs = group.map((c) => c.gender).filter(Boolean);
+        if (gs.length && gs.every((g) => g === "female")) return "spay";
+        if (gs.length && gs.every((g) => g === "male")) return "neuter";
+        return "spay/neuter";
+      }
+      function surgeryPhrase(group) {
+        const proc = procedureForGroupByGender(group);
+        const pron =
+          group.length === 1
+            ? group[0].gender === "female"
+              ? "her"
+              : group[0].gender === "male"
+              ? "his"
+              : "their"
+            : "their";
+        const suffix = group.length > 1 ? "surgeries" : "surgery";
+        return `${pron} ${proc} ${suffix}`;
+      }
+
+      // Generate SmartTag timing phrase (different for adults vs kittens)
+
+      // Render Tattoo ownership paragraph for 0/1/multiple cats
+      function renderTattooOwnershipParagraph(cats) {
+        const tattooedCats = (cats || []).filter((c) => c.hasTattoo);
+        const nonTattooedCats = (cats || []).filter((c) => !c.hasTattoo);
+
+        if (tattooedCats.length === 0) return "";
+
+        // Check if any tattooed cat has "VOKRA" as hospital name
+        const catsWithVokra = tattooedCats.filter(
+          (c) =>
+            c.hospitalName && c.hospitalName.toUpperCase().includes("VOKRA")
+        );
+
+        let vokraWarningHtml = "";
+        if (catsWithVokra.length > 0) {
+          const catNames = catsWithVokra.map((c) => c.name).join(", ");
+          vokraWarningHtml = `<p style="background:#fff3cd;border:2px solid #ffc107;border-radius:8px;padding:12px 15px;color:#856404;"><strong style="color:#dc3545;">⚠️ WARNING:</strong> The issuing shelter for <strong>${catNames}</strong> is showing as "VOKRA" which is incorrect. Please check the <a href="https://drive.google.com/file/d/1JNpRKjl_b5VlKgGa9dyeKouTGp-e7RIz/view?usp=sharing" target="_blank" rel="noopener">BC Pet Registry Tattoo Code</a> and update the hospital name before sending this email.</p>`;
+        }
+
+        let result = "";
+
+        // Single tattooed cat (may or may not have other cats without tattoo)
+        if (tattooedCats.length === 1) {
+          const c = tattooedCats[0];
+          // Format phone with parentheses: "(604-221-7771)"
+          const phoneText = c.hospitalPhone
+            ? ` (${c.hospitalPhone.trim()})`
+            : "";
+          // Format: "Juno's tattoo (MKP 131)"
+          const tattooText = c.tattooNumber
+            ? `${c.name}'s tattoo (<strong class="purple-bold">${c.tattooNumber}</strong>)`
+            : "the tattoo";
+
+          result = `${vokraWarningHtml}<p>If you haven't already done so, please contact <strong class="purple-bold">${
+            c.hospitalName || "*** Animal Hospital ***"
+          }</strong>${phoneText}, where ${tattooText} was completed to change ownership of your kitty.`;
+
+          // Add note about cats without tattoo
+          if (nonTattooedCats.length === 1) {
+            result += ` <strong class="purple-bold">${nonTattooedCats[0].name}</strong> does not have an ear tattoo.`;
+          } else if (nonTattooedCats.length > 1) {
+            const names = nonTattooedCats
+              .map((c) => `<strong class="purple-bold">${c.name}</strong>`)
+              .join(" and ");
+            result += ` ${names} do not have ear tattoos.`;
+          }
+
+          result += `</p>`;
+          return result;
+        }
+
+        // Multiple tattooed cats: merge into one sentence, list each cat for clarity
+        const items = tattooedCats
+          .map((c) => {
+            const name = (c.name || "[Cat]").trim();
+            const num = c.tattooNumber
+              ? ` (<strong class="purple-bold">${c.tattooNumber}</strong>)`
+              : "";
+            const hosp = c.hospitalName ? ` @ ${c.hospitalName}` : "";
+            // Format phone with parentheses
+            const phone = c.hospitalPhone
+              ? ` (${c.hospitalPhone.trim()})`
+              : "";
+            return `${name}${num}${hosp}${phone}`;
+          })
+          .join(", ");
+
+        result = `${vokraWarningHtml}<p>If you haven't already done so, please contact the hospitals where the tattoos were completed to change ownership of your <strong class="purple-bold">kitties</strong>: ${items}.`;
+
+        // Add note about cats without tattoo
+        if (nonTattooedCats.length === 1) {
+          result += ` <strong class="purple-bold">${nonTattooedCats[0].name}</strong> does not have an ear tattoo.`;
+        } else if (nonTattooedCats.length > 1) {
+          const names = nonTattooedCats
+            .map((c) => `<strong class="purple-bold">${c.name}</strong>`)
+            .join(" and ");
+          result += ` ${names} do not have ear tattoos.`;
+        }
+
+        result += `</p>`;
+        return result;
+      }
+
+      function smartTagTimingPhrase(cats) {
+        // Check if all cats are adults or confirmed already spayed
+        const allAdultOrSpayed = cats.every(
+          (c) => c.category === "adult" || c.confirmedSpayed
+        );
+
+        if (allAdultOrSpayed) {
+          // For adult cats or already spayed cats, use "adoption"
+          if (cats.length === 1) {
+            const pronoun =
+              cats[0].gender === "female"
+                ? "her"
+                : cats[0].gender === "male"
+                ? "his"
+                : "their";
+            return `${pronoun} adoption`;
+          } else {
+            return `their adoption`;
+          }
+        } else {
+          // For kittens needing surgery, use surgery phrase
+          return surgeryPhrase(cats);
+        }
+      }
+
+      /* ---------- Date helpers for 5 months ---------- */
+      function isPastFiveMonths(dobStr) {
+        if (!dobStr) return false;
+        const dob = new Date(dobStr + "T00:00:00");
+        const five = addMonths(dob, 5);
+        return todayStart() > startOfDay(five);
+      }
+
+      /* ---------- Cat card UI ---------- */
+      function createCatSection(index) {
+        const isFirst = index === 0;
+        const el = document.createElement("div");
+        el.className = "cat-section";
+        el.id = `cat-${index}`;
+        el.innerHTML = `
+          <h3>${isFirst ? "Cat 1" : `Cat ${index + 1}`}${
+          !isFirst
+            ? `<button class="remove-cat-btn" onclick="removeCat(${index})">Remove</button>`
+            : ""
+        }</h3>
+
+          <div class="form-group">
+            <label for="catName-${index}">Cat Name: <span style="color:var(--color-error)">*</span></label>
+            <input type="text" id="catName-${index}" placeholder="Enter cat's name" onchange="updateSameAsLabels(); generateEmail();" required placeholder="Enter cat\'s name">
+          </div>
+
+          <div class="form-group">
+            <label for="catGender-${index}">Cat Gender: <span style="color:var(--color-error)">*</span></label>
+            <select id="catGender-${index}" onchange="generateEmail();" required>
+              <option value="">Select gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="catDob-${index}">Date of Birth (DOB):</label>
+            <input type="date" id="catDob-${index}" onchange="updateFromDOB(${index}); generateEmail();">
+            ${
+              !isFirst
+                ? `
+              <div class="same-as-checkbox">
+                <input type="checkbox" id="sameDob-${index}" onchange="copyCatDOB(${index});">
+                <label for="sameDob-${index}" id="sameDobLabel-${index}">Same DOB as first cat</label>
+              </div>`
+                : ""
+            }
+            <small style="color:var(--color-text-muted);font-size:0.85em;display:block;margin-top:8px;">
+              Optional. If left empty, surgery guidance will be included.
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="spayNeuterDate-${index}">Spay/Neuter Due Date (auto):</label>
+            <input type="date" id="spayNeuterDate-${index}" onchange="generateEmail();" oninput="generateEmail();">
+            
+          </div>
+
+          <!-- Confirm spayed/neutered if age > 5 months (strictly past the 5M mark) -->
+          <div class="form-group" id="spayConfirmWrap-${index}" style="display:none;">
+            <div class="checkbox-item">
+              <input type="checkbox" id="confirmedSpayed-${index}" onchange="handleSpayedConfirmChange(${index});">
+              <span>Confirm this cat is already spayed/neutered</span>
+            </div>
+            <small style="display:block;color:var(--color-text-muted);margin-top:6px;">Shown because DOB indicates age &gt; 5 months.</small>
+          </div>
+
+          <div class="form-group">
+            <label>Identification:</label>
+            <div class="checkbox-item">
+              <input type="checkbox" id="hasTattoo-${index}" onchange="toggleTattooDetails(${index}); generateEmail();">
+              <span>Has tattoo/ear tag</span>
+            </div>
+            <div id="tattooDetails-${index}" class="tattoo-details">
+              <div class="tattoo-details-grid">
+                <div class="tattoo-detail-item">
+                  <label for="hospitalName-${index}">Animal Hospital Name:</label>
+                  <input type="text" id="hospitalName-${index}" placeholder="Enter hospital name" onchange="checkVokraHospitalName(${index}); generateEmail();" oninput="checkVokraHospitalName(${index});">
+                  <div id="vokraWarning-${index}" class="vokra-warning">
+                    ⚠️ <strong>"VOKRA"</strong> is not the correct issuing shelter. Please check the <a href="https://drive.google.com/file/d/1JNpRKjl_b5VlKgGa9dyeKouTGp-e7RIz/view?usp=sharing" target="_blank" rel="noopener">BC Pet Registry Tattoo Code</a> and enter the correct animal hospital name.
+                  </div>
+                </div>
+                <div class="tattoo-detail-item">
+                  <label for="hospitalPhone-${index}">Phone Number:</label>
+                  <input type="text" id="hospitalPhone-${index}" placeholder="604-XXX-XXXX" onchange="generateEmail();" oninput="formatPhoneNumber(this);" onpaste="setTimeout(()=>formatPhoneNumber(this),10);">
+                </div>
+              <div class="tattoo-detail-item">
+                <label for="tattooNumber-${index}">Tattoo Number:</label>
+                <input type="text" id="tattooNumber-${index}" placeholder="Enter tattoo number" onchange="generateEmail();">
+              </div>
+              
+              </div>
+              <div class="tattoo-link" style="margin-top: 10px;">
+                <a href="https://drive.google.com/file/d/1Em1zC-69WLHOwL3vFPN3EuVM2qRD6MhD/view?usp=sharing" target="_blank" rel="noopener">🔍 Please check tattoo number on <strong style="text-decoration:underline;">BCPet Registry Tattoo Code 2026</strong></a>
+              </div>
+            </div>
+
+            <div class="checkbox-item" style="margin-top:10px;">
+              <input type="checkbox" id="hasMicrochip-${index}" onchange="toggleMicrochipInput(${index}); generateEmail();">
+              <span>Has microchip</span>
+            </div>
+
+            <div id="microchipInputContainer-${index}" style="display:none;margin-top:10px;">
+              <div style="display:flex;gap:8px;align-items:center;">
+                <input type="text" id="microchipNumber-${index}" placeholder="Enter microchip number" style="flex:1;padding:8px 12px;border:1px solid var(--color-border);border-radius:var(--radius-sm);font-size:14px;font-family:inherit;background:var(--color-surface);color:var(--color-text);" onchange="generateEmail(); toggleSearchButton(${index});" oninput="toggleSearchButton(${index});">
+                <button id="searchButton-${index}" class="search-microchip-btn" onclick="searchMicrochip(${index})" disabled>Search AAHA</button>
+              </div>
+
+              <div id="microchipCompanies-${index}" class="microchip-companies show">
+                <label>Microchip Company:</label>
+                <div class="microchip-company-options">
+                  <div class="microchip-company-item">
+                    <input type="radio" id="smartTag-${index}" name="microchipCompany-${index}" value="smartTag" onchange="generateEmail();">
+                    <span>SmartTag</span>
+                  </div>
+                  <div class="microchip-company-item">
+                    <input type="radio" id="bcPetRegistry-${index}" name="microchipCompany-${index}" value="bcPetRegistry" onchange="generateEmail();">
+                    <span>BC Pet Registry</span>
+                  </div>
+                  <div class="microchip-company-item">
+                    <input type="radio" id="otherCompany-${index}" name="microchipCompany-${index}" value="other" onchange="toggleOtherCompanyInput(${index}); generateEmail();">
+                    <span>Other:</span>
+                    <input type="text" id="otherCompanyName-${index}" placeholder="Enter company name" style="display:none;" onchange="generateEmail();">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        return el;
+      }
+
+      function addCat(silent = false) {
+        const container = document.getElementById("catsContainer");
+        const labelText = catCount === 0 ? "Cat 1" : `Cat ${catCount + 1}`;
+        const card = createCatSection(catCount);
+        container.appendChild(card);
+        toggleTattooDetails(catCount);
+        catCount++;
+        updateSameAsLabels();
+        if (!silent) {
+          const isAdd = labelText !== "Cat 1";
+          if (isAdd) showToast(`Added ${labelText}`, "add");
+          try {
+            generateEmail();
+          } catch (_e) {}
+        }
+      }
+
+      function removeCat(index) {
+        if (index === 0) return;
+        const card = document.getElementById(`cat-${index}`);
+        if (card) {
+          const name = document
+            .getElementById(`catName-${index}`)
+            ?.value?.trim();
+          const label = name ? name : `Cat ${index + 1}`;
+          showToast(`Removed ${label}`, "remove");
+          card.remove();
+          generateEmail();
+        }
+      }
+
+      function updateSameAsLabels() {
+        const firstName =
+          document.getElementById("catName-0")?.value || "first cat";
+        for (let i = 1; i < catCount; i++) {
+          const label = document.getElementById(`sameDobLabel-${i}`);
+          if (label) {
+            label.textContent = `Same DOB as ${firstName}`;
+          }
+        }
+      }
+
+      function copyCatDOB(toIndex) {
+        const cb = document.getElementById(`sameDob-${toIndex}`);
+        if (cb?.checked) {
+          const firstDob = document.getElementById("catDob-0")?.value || "";
+          document.getElementById(`catDob-${toIndex}`).value = firstDob;
+          updateFromDOB(toIndex);
+          generateEmail();
+        }
+      }
+
+      function updateFromDOB(catIndex) {
+        const dobStr = document.getElementById(`catDob-${catIndex}`)?.value;
+        const out = document.getElementById(`spayNeuterDate-${catIndex}`);
+        const confirmedCb = document.getElementById(
+          `confirmedSpayed-${catIndex}`
+        );
+
+        if (!dobStr) {
+          if (out) {
+            out.value = "";
+            // Sync UI
+            if (typeof window.updateDateUIFromHidden === "function") {
+              window.updateDateUIFromHidden(`spayNeuterDate-${catIndex}`);
+            }
+          }
+          updateSpayConfirmVisibility(catIndex, null);
+          return;
+        }
+
+        const dob = new Date(dobStr + "T00:00:00");
+        const spayDate = addMonths(dob, 5);
+
+        // Only set spay/neuter date if NOT confirmed already spayed
+        if (out && !(confirmedCb && confirmedCb.checked)) {
+          out.value = spayDate.toISOString().split("T")[0];
+          // Sync UI
+          if (typeof window.updateDateUIFromHidden === "function") {
+            window.updateDateUIFromHidden(`spayNeuterDate-${catIndex}`);
+          }
+        } else if (out && confirmedCb && confirmedCb.checked) {
+          // If already confirmed spayed, clear the date
+          out.value = "";
+          // Sync UI
+          if (typeof window.updateDateUIFromHidden === "function") {
+            window.updateDateUIFromHidden(`spayNeuterDate-${catIndex}`);
+          }
+        }
+
+        updateSpayConfirmVisibility(catIndex, null);
+
+        if (catIndex === 0) {
+          for (let i = 1; i < catCount; i++) {
+            const cb = document.getElementById(`sameDob-${i}`);
+            const targetDob = document.getElementById(`catDob-${i}`);
+            if (cb && cb.checked && targetDob) {
+              targetDob.value = dobStr;
+              const out2 = document.getElementById(`spayNeuterDate-${i}`);
+              const confirmedCb2 = document.getElementById(
+                `confirmedSpayed-${i}`
+              );
+              const sp2 = addMonths(dob, 5);
+              if (out2 && !(confirmedCb2 && confirmedCb2.checked)) {
+                out2.value = sp2.toISOString().split("T")[0];
+                if (typeof window.updateDateUIFromHidden === "function") {
+                  window.updateDateUIFromHidden(`spayNeuterDate-${i}`);
+                }
+              } else if (out2 && confirmedCb2 && confirmedCb2.checked) {
+                out2.value = "";
+                if (typeof window.updateDateUIFromHidden === "function") {
+                  window.updateDateUIFromHidden(`spayNeuterDate-${i}`);
+                }
+              }
+              updateSpayConfirmVisibility(i, null);
+            }
+          }
+        }
+      }
+
+      function updateSpayConfirmVisibility(catIndex, _unused) {
+        const wrap = document.getElementById(`spayConfirmWrap-${catIndex}`);
+        const cb = document.getElementById(`confirmedSpayed-${catIndex}`);
+        const dobStr = document.getElementById(`catDob-${catIndex}`)?.value;
+
+        // Get the segmented date input fields
+        const mmField = document.getElementById(
+          `spayNeuterDate-${catIndex}-mm`
+        );
+        const ddField = document.getElementById(
+          `spayNeuterDate-${catIndex}-dd`
+        );
+        const yyyyField = document.getElementById(
+          `spayNeuterDate-${catIndex}-yyyy`
+        );
+
+        if (!dobStr) {
+          wrap.style.display = "none";
+          if (cb) cb.checked = false;
+          // Re-enable fields when hiding the checkbox
+          if (mmField) mmField.disabled = false;
+          if (ddField) ddField.disabled = false;
+          if (yyyyField) yyyyField.disabled = false;
+          return;
+        }
+        const show = isPastFiveMonths(dobStr);
+        if (show) {
+          wrap.style.display = "block";
+          // Check current state and apply disabled accordingly
+          if (cb && cb.checked) {
+            if (mmField) mmField.disabled = true;
+            if (ddField) ddField.disabled = true;
+            if (yyyyField) yyyyField.disabled = true;
+          }
+        } else {
+          wrap.style.display = "none";
+          if (cb) cb.checked = false;
+          // Re-enable fields when hiding the checkbox
+          if (mmField) mmField.disabled = false;
+          if (ddField) ddField.disabled = false;
+          if (yyyyField) yyyyField.disabled = false;
+        }
+      }
+
+      // Handle when "already spayed/neutered" checkbox is changed
+      function handleSpayedConfirmChange(catIndex) {
+        const cb = document.getElementById(`confirmedSpayed-${catIndex}`);
+        const spayDateField = document.getElementById(
+          `spayNeuterDate-${catIndex}`
+        );
+
+        // Get the segmented date input fields
+        const mmField = document.getElementById(
+          `spayNeuterDate-${catIndex}-mm`
+        );
+        const ddField = document.getElementById(
+          `spayNeuterDate-${catIndex}-dd`
+        );
+        const yyyyField = document.getElementById(
+          `spayNeuterDate-${catIndex}-yyyy`
+        );
+
+        if (cb && cb.checked) {
+          // If confirmed already spayed, clear the spay/neuter date field
+          if (spayDateField) {
+            spayDateField.value = "";
+            // Also clear the segmented date UI if it exists
+            if (typeof window.updateDateUIFromHidden === "function") {
+              window.updateDateUIFromHidden(`spayNeuterDate-${catIndex}`);
+            }
+          }
+          // Disable the segmented input fields
+          if (mmField) mmField.disabled = true;
+          if (ddField) ddField.disabled = true;
+          if (yyyyField) yyyyField.disabled = true;
+        } else {
+          // If unchecked, recalculate the spay/neuter date from DOB
+          const dobStr = document.getElementById(`catDob-${catIndex}`)?.value;
+          if (dobStr && spayDateField) {
+            const dob = new Date(dobStr + "T00:00:00");
+            const spayDate = addMonths(dob, 5);
+            spayDateField.value = spayDate.toISOString().split("T")[0];
+            // Sync the segmented date UI if it exists
+            if (typeof window.updateDateUIFromHidden === "function") {
+              window.updateDateUIFromHidden(`spayNeuterDate-${catIndex}`);
+            }
+          }
+          // Re-enable the segmented input fields
+          if (mmField) mmField.disabled = false;
+          if (ddField) ddField.disabled = false;
+          if (yyyyField) yyyyField.disabled = false;
+        }
+
+        generateEmail();
+      }
+
+      function toggleTattooDetails(catIndex) {
+        const checkbox = document.getElementById(`hasTattoo-${catIndex}`);
+        const detailsDiv = document.getElementById(`tattooDetails-${catIndex}`);
+        if (!checkbox || !detailsDiv) return;
+        if (checkbox.checked) {
+          detailsDiv.classList.add("show");
+          const input = document.getElementById(`hospitalName-${catIndex}`);
+          if (input) {
+            setTimeout(() => input.focus(), 100);
+          }
+        } else {
+          detailsDiv.classList.remove("show");
+          document.getElementById(`hospitalName-${catIndex}`).value = "";
+          document.getElementById(`hospitalPhone-${catIndex}`).value = "";
+          document.getElementById(`tattooNumber-${catIndex}`).value = "";
+        }
+      }
+
+      function toggleMicrochipInput(catIndex) {
+        const checkbox = document.getElementById(`hasMicrochip-${catIndex}`);
+        const box = document.getElementById(
+          `microchipInputContainer-${catIndex}`
+        );
+        const input = document.getElementById(`microchipNumber-${catIndex}`);
+        const btn = document.getElementById(`searchButton-${catIndex}`);
+        if (checkbox.checked) {
+          box.style.display = "block";
+          input.focus();
+          toggleSearchButton(catIndex);
+        } else {
+          box.style.display = "none";
+          input.value = "";
+          if (btn) {
+            btn.disabled = true;
+          }
+          const radios = document.getElementsByName(
+            `microchipCompany-${catIndex}`
+          );
+          radios.forEach((r) => (r.checked = false));
+          document.getElementById(`otherCompanyName-${catIndex}`).value = "";
+          document.getElementById(
+            `otherCompanyName-${catIndex}`
+          ).style.display = "none";
+        }
+      }
+
+      function toggleOtherCompanyInput(catIndex) {
+        const r = document.getElementById(`otherCompany-${catIndex}`);
+        const input = document.getElementById(`otherCompanyName-${catIndex}`);
+        if (r.checked) {
+          input.style.display = "block";
+          input.focus();
+        } else {
+          input.style.display = "none";
+          input.value = "";
+        }
+      }
+
+      function toggleSearchButton(catIndex) {
+        const input = document.getElementById(`microchipNumber-${catIndex}`);
+        const btn = document.getElementById(`searchButton-${catIndex}`);
+        if (input && btn) {
+          btn.disabled = !(input.value.trim().length > 0);
+        }
+      }
+
+      // Check if hospital name is "VOKRA" and show warning
+      function checkVokraHospitalName(catIndex) {
+        const hospitalNameInput = document.getElementById(
+          `hospitalName-${catIndex}`
+        );
+        const warningDiv = document.getElementById(`vokraWarning-${catIndex}`);
+
+        if (!hospitalNameInput || !warningDiv) return;
+
+        const hospitalName = hospitalNameInput.value.trim().toUpperCase();
+
+        // Check if the hospital name is "VOKRA" (case insensitive, with or without extra text)
+        if (hospitalName === "VOKRA" || hospitalName.includes("VOKRA")) {
+          warningDiv.classList.add("show");
+          hospitalNameInput.classList.add("input-error");
+        } else {
+          warningDiv.classList.remove("show");
+          hospitalNameInput.classList.remove("input-error");
+        }
+      }
+
+      function searchMicrochip(catIndex) {
+        const n = document
+          .getElementById(`microchipNumber-${catIndex}`)
+          .value.trim();
+        if (n) {
+          const now = new Date();
+          const months = [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+          ];
+          const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+          const dateString = `${months[now.getMonth()]}%20${
+            days[now.getDay()]
+          },%20${now.getFullYear()}`;
+          const url = `https://www.aaha.org/for-veterinary-professionals/microchip-registry-lookup-tool-aaha-find-your-pets-microchip-registry/?microchip_id=${encodeURIComponent(
+            n
+          )}&date=${dateString}`;
+          window.open(url, "_blank");
+        }
+      }
+
+      function getAllCats() {
+        const cats = [];
+        for (let i = 0; i < catCount; i++) {
+          const section = document.getElementById(`cat-${i}`);
+          if (!section) continue;
+          const name =
+            document.getElementById(`catName-${i}`)?.value ||
+            `[Cat ${i + 1} Name]`;
+          const gender = document.getElementById(`catGender-${i}`)?.value;
+          const dobStr = document.getElementById(`catDob-${i}`)?.value || "";
+          const spayNeuterDate =
+            document.getElementById(`spayNeuterDate-${i}`)?.value || "";
+          const hasTattoo =
+            document.getElementById(`hasTattoo-${i}`)?.checked || false;
+          const hospitalName =
+            document.getElementById(`hospitalName-${i}`)?.value || "";
+          const hospitalPhone =
+            document.getElementById(`hospitalPhone-${i}`)?.value || "";
+          const tattooNumber =
+            document.getElementById(`tattooNumber-${i}`)?.value || "";
+          const hasMicrochip =
+            document.getElementById(`hasMicrochip-${i}`)?.checked || false;
+          const microchipNumber =
+            document.getElementById(`microchipNumber-${i}`)?.value || "";
+          const selectedCompany = document.querySelector(
+            `input[name="microchipCompany-${i}"]:checked`
+          );
+          const smartTag = selectedCompany?.value === "smartTag";
+          const bcPetRegistry = selectedCompany?.value === "bcPetRegistry";
+          const otherCompany = selectedCompany?.value === "other";
+          const otherCompanyName =
+            document.getElementById(`otherCompanyName-${i}`)?.value || "";
+          const confirmedSpayed =
+            document.getElementById(`confirmedSpayed-${i}`)?.checked || false;
+
+          let ageInMonths = 0,
+            category = "young-kitten"; // Default to kitten (surgery guidance shows) when DOB not provided
+          if (dobStr) {
+            const dob = new Date(dobStr + "T00:00:00");
+            ageInMonths = monthsBetween(dob, todayStart());
+            if (ageInMonths <= 5) category = "young-kitten";
+            else if (ageInMonths > 5 && ageInMonths < 12)
+              category = "old-kitten";
+            else category = "adult";
+          }
+
+          cats.push({
+            name,
+            gender,
+            dobStr,
+            ageInMonths,
+            category,
+            spayNeuterDate,
+            confirmedSpayed,
+            hasTattoo,
+            hospitalName,
+            hospitalPhone,
+            tattooNumber,
+            hasMicrochip,
+            microchipNumber,
+            microchipCompany: {
+              smartTag,
+              bcPetRegistry,
+              otherCompany,
+              otherCompanyName,
+            },
+            pronoun:
+              gender === "female" ? "her" : gender === "male" ? "his" : "their",
+            pronounCap:
+              gender === "female" ? "Her" : gender === "male" ? "His" : "Their",
+            catPronoun:
+              gender === "female" ? "she" : gender === "male" ? "he" : "they",
+          });
+        }
+        return cats;
+      }
+
+      /* ---------- Pronouns for missing sentence ---------- */
+      function getGroupPronounSet(cats) {
+        if (!cats || cats.length === 0) {
+          return { subj: "they", poss: "their", goVerb: "go" };
+        }
+        if (cats.length === 1) {
+          const c = cats[0];
+          if (c.gender === "male")
+            return { subj: "he", poss: "his", goVerb: "goes" };
+          if (c.gender === "female")
+            return { subj: "she", poss: "her", goVerb: "goes" };
+          return { subj: "they", poss: "their", goVerb: "go" };
+        }
+        return { subj: "they", poss: "their", goVerb: "go" };
+      }
+      function generateMissingReturnSentence(cats) {
+        const p = getGroupPronounSet(cats);
+        return `In the unlikely event ${p.subj} ${p.goVerb} missing, ${p.subj} can be returned to you as soon as possible via ${p.poss} tattoo and/or microchip.`;
+      }
+
+      function fourToFourPointFiveRangeForPair(catA, catB) {
+        const startA = addMonths(new Date(catA.dobStr + "T00:00:00"), 4);
+        const endA = addDays(startA, 14);
+        const startB = addMonths(new Date(catB.dobStr + "T00:00:00"), 4);
+        const endB = addDays(startB, 14);
+        const earliestStart = startA < startB ? startA : startB;
+        const latestEnd = endA > endB ? endA : endB;
+        return {
+          startStr: earliestStart.toISOString().split("T")[0],
+          endStr: latestEnd.toISOString().split("T")[0],
+        };
+      }
+
+      /* ---------- Validation for required fields ---------- */
+      function clearInvalid(el) {
+        if (!el) return;
+        el.classList.remove("input-error");
+        el.setAttribute("aria-invalid", "false");
+      }
+      function markInvalid(el) {
+        if (!el) return;
+        el.classList.add("input-error");
+        el.setAttribute("aria-invalid", "true");
+      }
+      function validateRequiredFields() {
+        const missing = [];
+
+        const adopter = document.getElementById("adopterName");
+        if (!adopter || !adopter.value.trim()) {
+          missing.push("Adopter First Name");
+          markInvalid(adopter);
+        } else {
+          clearInvalid(adopter);
+        }
+
+        const pacu = document.getElementById("pacuDate");
+        if (!pacu || !pacu.value) {
+          missing.push("PACU Due Date");
+          markInvalid(pacu);
+        } else {
+          clearInvalid(pacu);
+        }
+
+        for (let i = 0; i < catCount; i++) {
+          const sec = document.getElementById(`cat-${i}`);
+          if (!sec) continue;
+          const nameEl = document.getElementById(`catName-${i}`);
+          const genderEl = document.getElementById(`catGender-${i}`);
+          if (!nameEl || !nameEl.value.trim()) {
+            missing.push(`Cat ${i + 1} Name`);
+            markInvalid(nameEl);
+          } else {
+            clearInvalid(nameEl);
+          }
+          if (!genderEl || !genderEl.value) {
+            missing.push(`Cat ${i + 1} Gender`);
+            markInvalid(genderEl);
+          } else {
+            clearInvalid(genderEl);
+          }
+          // DOB is now optional - no validation needed
+        }
+
+        if (missing.length) {
+          showToast("Please fill required: " + missing.join(", "), "remove");
+          const firstInvalid = document.querySelector(".input-error");
+          if (firstInvalid) firstInvalid.focus();
+          return false;
+        }
+        return true;
+      }
+
+      function validateAndGenerate() {
+        if (!validateRequiredFields()) return;
+        generateEmail();
+      }
+
+      /* ---------- Email generation ---------- */
+      function generateEmail() {
+        function isMoreThanEightMonthsFromNow(dateStr) {
+          if (!dateStr) return false;
+          const v = new Date(dateStr + "T00:00:00");
+          const cutoff = addMonths(todayStart(), 8);
+          return v > cutoff;
+        }
+
+        const adopterName =
+          document.getElementById("adopterName").value || "[Adopter Name]";
+        const coAdopterName =
+          document.getElementById("coAdopterName").value || "";
+        
+        // Build greeting name: "John" or "John & Jane"
+        const greetingName = coAdopterName 
+          ? `${adopterName} & ${coAdopterName}`
+          : adopterName;
+        
+        const cats = getAllCats();
+        if (cats.length === 0) return;
+
+        const pacuDate = document.getElementById("pacuDate").value;
+        const vaccineDate = document.getElementById("vaccineDate").value;
+
+        const includeHealth = document.getElementById("healthSection").checked;
+        const includeIdentification = document.getElementById(
+          "identificationSection"
+        ).checked;
+        const includeInsurance =
+          document.getElementById("insuranceSection").checked;
+        const includeFacebook =
+          document.getElementById("facebookSection").checked;
+
+        const catNames = cats.map((c) => c.name).join(" and ");
+        const hasKittens = cats.some((c) => c.category !== "adult");
+
+        const introLine =
+          cats.length > 1
+            ? `It's been a couple of weeks since you brought your new arrivals home; I hope everything is going well with ${catNames}!`
+            : `It's been a couple of weeks since you brought your new arrival home, and I hope everything is going well with ${catNames}!`;
+
+        let email = `<p style="margin:0 0 16px 0;">Hi ${greetingName},</p>
+<p style="margin:0 0 16px 0;">${introLine} I am reaching out with a couple of reminders and to see if you have any questions since the adoption.</p>`;
+
+        if (includeHealth) {
+          email += `<p><strong>Health Related</strong></p>`;
+
+          /* PACU */
+          if (pacuDate) {
+            const cmp = compareToToday(pacuDate);
+            const names = cats.map((c) => (c.name || `[Cat]`).trim());
+            const catSubject =
+              cats.length > 1 ? joinPossessive(names) : `${cats[0].name}'s`;
+
+            if (cmp > 0) {
+              email += `<p>Please make sure you have booked ${catSubject} Post Adoption Checkup (PACU) with one of our partner vets, for a date on or before <strong class="purple-bold">${formatDate(
+                pacuDate
+              )}</strong>.</p>
+<p>You will be asked to provide the Contract (Agreement) and Medical History for the PACU (sent during the contract meeting from ShelterLuv). Ask the vet if they would prefer these electronically or (hard copy) in person. To avoid any cost to you, it is critical to provide these 2 documents to the vet, at the PACU.</p>`;
+            } else if (cmp === 0) {
+              email += `<p>Please make sure you have booked ${catSubject} Post Adoption Checkup (PACU) with one of our partner vets, for <strong class="purple-bold">${formatDate(
+                pacuDate
+              )} (Today)</strong>.</p>
+<p>Please bring the Contract (Agreement) and Medical History for the PACU (sent during the contract meeting from ShelterLuv). Ask the vet whether they prefer these electronically or (hard copy) in person. To avoid any cost to you, it is critical to provide these 2 documents to the vet at the PACU.</p>`;
+            } else {
+              email += `<p>I hope you were able to attend the Post Adoption Checkup (PACU) on <strong class="purple-bold">${formatDate(
+                pacuDate
+              )}</strong> with one of our partner vets and that all is well.</p>`;
+            }
+          }
+
+          /* Vaccine */
+          // Helper to format vaccine date as "MONTH YEAR" (e.g., "OCTOBER 2026")
+          function formatVaccineMonthYear(dateStr) {
+            if (!dateStr) return "";
+            const d = new Date(dateStr + "T00:00:00");
+            const months = [
+              "JANUARY",
+              "FEBRUARY",
+              "MARCH",
+              "APRIL",
+              "MAY",
+              "JUNE",
+              "JULY",
+              "AUGUST",
+              "SEPTEMBER",
+              "OCTOBER",
+              "NOVEMBER",
+              "DECEMBER",
+            ];
+            return `${months[d.getMonth()]} ${d.getFullYear()}`;
+          }
+
+          // Check if all cats are adults with confirmed spayed/neutered status
+          const allAdultsSpayed = cats.every(
+            (c) => c.category === "adult" || c.confirmedSpayed
+          );
+
+          if (
+            allAdultsSpayed &&
+            vaccineDate &&
+            isMoreThanEightMonthsFromNow(vaccineDate)
+          ) {
+            // Adult cats with booster vaccine in ~1 year
+            const catWord = cats.length === 1 ? "cat" : "cats";
+            email += `<p>Your ${catWord} will need a booster FVRCP vaccine in 1 year, thus <strong class="purple-bold">${formatVaccineMonthYear(
+              vaccineDate
+            )}</strong>.</p>`;
+          } else if (
+            hasKittens &&
+            vaccineDate &&
+            !isMoreThanEightMonthsFromNow(vaccineDate)
+          ) {
+            const vcmp = compareToToday(vaccineDate);
+            const kittens = cats.filter((c) => c.category !== "adult");
+            const possessiveText = kittens.length > 1 ? "kittens'" : "kitten's";
+            if (vcmp > 0) {
+              email += `<p>Kitten vaccine protocol: kittens require 2 FVRCP vaccines, spaced one month apart. Your ${possessiveText} next vaccine is due: <strong class="purple-bold">${formatDate(
+                vaccineDate
+              )}</strong>. This will be at your cost.</p>`;
+            } else if (vcmp === 0) {
+              email += `<p>Kitten vaccine protocol: kittens require 2 FVRCP vaccines, spaced one month apart. Your ${possessiveText} next vaccine is due: <strong class="purple-bold">${formatDate(
+                vaccineDate
+              )} (Today)</strong>. This is at your cost.</p>`;
+            } else {
+              email += `<p>Kitten vaccine protocol: kittens require 2 FVRCP vaccines, spaced one month apart. Your ${possessiveText} second vaccine was due: <strong class="purple-bold">${formatDate(
+                vaccineDate
+              )}</strong>, at your cost.</p>`;
+            }
+          }
+
+          /* Spay/neuter guidance */
+          if (hasKittens) {
+            const kittens = cats.filter((c) => c.category !== "adult");
+            const kittensNeedingSurgery = kittens.filter(
+              (k) => !k.confirmedSpayed
+            );
+
+            if (kittensNeedingSurgery.length > 0) {
+              let surgeryText = "";
+              if (kittensNeedingSurgery.length === 1) {
+                const k = kittensNeedingSurgery[0];
+                const procedure =
+                  k.gender === "female"
+                    ? "spay"
+                    : k.gender === "male"
+                    ? "neuter"
+                    : "spay/neuter";
+                surgeryText = `Your kitten will need ${k.pronoun} ${procedure}, tattoo (if applicable) and microchip insertion completed at the same partner vet that you attended for ${k.pronoun} PACU; cost is covered by adoption fees. `;
+              } else {
+                const onlyFem = kittensNeedingSurgery.every(
+                  (c) => c.gender === "female"
+                );
+                const onlyMale = kittensNeedingSurgery.every(
+                  (c) => c.gender === "male"
+                );
+                if (onlyFem) {
+                  surgeryText = `Your kittens will need to be spayed, tattoos (if applicable) and microchip insertion completed at the same partner vet that you attended for their PACU; cost is covered by adoption fees. `;
+                } else if (onlyMale) {
+                  surgeryText = `Your kittens will need to be neutered, tattoos (if applicable) and microchip insertion completed at the same partner vet that you attended for their PACU; cost is covered by adoption fees. `;
+                } else {
+                  surgeryText = `Your kittens will need their spay/neuter, tattoos (if applicable) and microchip insertion completed at the same partner vet that you attended for their PACU; cost is covered by adoption fees. `;
+                }
+              }
+
+              // New weight-based policy (replaces age-based policy)
+              surgeryText += `VOKRA policy states for surgery to occur when the cat(s) are of a minimum weight of <strong class="purple-bold">2.5 kgs (5.5 lbs)</strong>. `;
+              
+              // Check if male-female pair - add estrus monitoring guidance
+              const hasMaleCat = kittensNeedingSurgery.some((c) => c.gender === "male");
+              const hasFemaleCat = kittensNeedingSurgery.some((c) => c.gender === "female");
+              
+              if (hasMaleCat && hasFemaleCat) {
+                surgeryText += `When adopting a male-female pair, please monitor the female for signs of estrus ("heat" – intense affection, rubbing, rolling, vocalizing, or raising their rear end), until the surgery can be completed. `;
+              }
+              
+              surgeryText += hasFemaleCat
+                ? `This avoids unwanted pregnancies, and prevents other mating behaviours from occurring.`
+                : `This avoids other mating behaviours from occurring.`;
+              email += `<p>${surgeryText}</p>`;
+            }
+          }
+
+          email += `<p>${generateVetContinuationSentence(cats)}</p>`;
+        }
+
+        /* Identification */
+        if (includeIdentification) {
+          email += `<p><strong>Identification</strong></p>`;
+          const hasTattooedCats = cats.some((c) => c.hasTattoo);
+          const hasMicrochippedCats = cats.some((c) => c.hasMicrochip);
+
+          if (hasTattooedCats) {
+            email += renderTattooOwnershipParagraph(cats);
+          }
+
+          const missingSentence = generateMissingReturnSentence(cats);
+          const possessiveNames =
+            cats.length === 1
+              ? "your kitty's"
+              : separatePossessive(cats.map((c) => (c.name || `[Cat]`).trim()));
+          const idPhrase =
+            cats.length === 1
+              ? "identification registration is"
+              : "identification registrations are";
+          const procWord = procedureForGroupByGender(cats);
+
+          if (hasMicrochippedCats) {
+            // Categorize cats by microchip provider
+            const smartTagCats = cats.filter(
+              (c) => c.hasMicrochip && c.microchipCompany.smartTag
+            );
+            const bcCats = cats.filter(
+              (c) => c.hasMicrochip && c.microchipCompany.bcPetRegistry
+            );
+            const otherCats = cats.filter(
+              (c) => c.hasMicrochip && c.microchipCompany.otherCompany
+            );
+
+            // Helper to generate cat name prefix for mixed scenarios
+            const getCatNamePrefix = (catList, allMicrochippedCats) => {
+              if (
+                allMicrochippedCats.length <= 1 ||
+                catList.length === allMicrochippedCats.length
+              ) {
+                return ""; // No prefix needed if only one cat or all cats use same provider
+              }
+              if (catList.length === 1) {
+                return `For <strong class="purple-bold">${catList[0].name}</strong>: `;
+              }
+              return `For <strong class="purple-bold">${catList
+                .map((c) => c.name)
+                .join(" and ")}</strong>: `;
+            };
+
+            const allMicrochippedCats = cats.filter((c) => c.hasMicrochip);
+
+            // SmartTag cats
+            if (smartTagCats.length > 0) {
+              const stPhrase = smartTagTimingPhrase(smartTagCats);
+              const prefix = getCatNamePrefix(
+                smartTagCats,
+                allMicrochippedCats
+              );
+              email += `<p>${prefix}Our microchip provider SmartTag will send you an email <strong class="purple-bold">within 6 weeks of ${stPhrase}</strong> to ask you to set up an account. There is no cost for this, but it will be your method to keep your contact info up to date (see microchip program page sent during the contract meeting).</p>`;
+            }
+
+            // BC Pet Registry cats
+            if (bcCats.length > 0) {
+              let pronoun;
+              if (bcCats.length === 1) {
+                const cat = bcCats[0];
+                pronoun =
+                  cat.gender === "female"
+                    ? "her"
+                    : cat.gender === "male"
+                    ? "his"
+                    : "their";
+              } else {
+                pronoun = "their";
+              }
+              const prefix = getCatNamePrefix(bcCats, allMicrochippedCats);
+              email += `<p>${prefix}The microchip provider BC Pet Registry has been advised of ${pronoun} change of ownership. If you need to contact them, please visit: https://www.bcpetregistry.ca<br>or call: 855-622-7722 (Business Hours), 866-303-5950 (After Hours).</p>`;
+            }
+
+            // Other microchip provider cats
+            if (otherCats.length > 0) {
+              otherCats.forEach((cat) => {
+                if (cat.microchipCompany.otherCompanyName) {
+                  const prefix =
+                    allMicrochippedCats.length > 1
+                      ? `For <strong class="purple-bold">${cat.name}</strong>: `
+                      : "";
+                  email += `<p>${prefix}The microchip provider ${cat.microchipCompany.otherCompanyName} has been advised of ${cat.pronoun} change of ownership.</p>`;
+                }
+              });
+            }
+
+            // Common closing paragraphs
+            email += `<p>Please ensure ${possessiveNames} ${idPhrase} always kept current. ${missingSentence}</p>`;
+
+            // Build microchip provider text based on which providers are used
+            const hasAnySmartTag = smartTagCats.length > 0;
+            const hasAnyBCPet = bcCats.length > 0;
+            const allMicrochippedCount = allMicrochippedCats.length;
+
+            let microchipProviderText;
+
+            // Check if we have mixed providers (more than one type among microchipped cats)
+            const providerTypes = [
+              smartTagCats.length > 0,
+              bcCats.length > 0,
+              otherCats.length > 0,
+            ].filter(Boolean).length;
+
+            if (providerTypes > 1) {
+              // Mixed providers - list them and specify which cat has which
+              const providerNames = [];
+              if (hasAnySmartTag) providerNames.push("SmartTag");
+              if (hasAnyBCPet) providerNames.push("BC Pet Registry");
+              otherCats.forEach((cat) => {
+                if (
+                  cat.microchipCompany.otherCompanyName &&
+                  !providerNames.includes(cat.microchipCompany.otherCompanyName)
+                ) {
+                  providerNames.push(cat.microchipCompany.otherCompanyName);
+                }
+              });
+
+              // Build the differentiation text (e.g., "Tux is SmartTag, Scoots is with BC Pet Registry")
+              const catProviderParts = [];
+              smartTagCats.forEach((cat) =>
+                catProviderParts.push(`${cat.name} is with SmartTag`)
+              );
+              bcCats.forEach((cat) =>
+                catProviderParts.push(`${cat.name} is with BC Pet Registry`)
+              );
+              otherCats.forEach((cat) => {
+                if (cat.microchipCompany.otherCompanyName) {
+                  catProviderParts.push(
+                    `${cat.name} is with ${cat.microchipCompany.otherCompanyName}`
+                  );
+                }
+              });
+
+              const providerListText = providerNames.join(" and ");
+              const catDifferentiationText = catProviderParts.join(", ");
+
+              microchipProviderText = `- The microchip provider (refer to your cat's Medical History document or your account <strong class="purple-bold">with ${providerListText}</strong>). ${catDifferentiationText}.`;
+            } else if (hasAnySmartTag) {
+              microchipProviderText = `- The microchip provider (refer to your cat's Medical History document or your account <strong class="purple-bold">with SmartTag</strong>).`;
+            } else if (hasAnyBCPet) {
+              microchipProviderText = `- The microchip provider (refer to your cat's Medical History document or your account <strong class="purple-bold">with BC Pet Registry</strong>).`;
+            } else if (
+              otherCats.length > 0 &&
+              otherCats[0].microchipCompany.otherCompanyName
+            ) {
+              microchipProviderText = `- The microchip provider (refer to your cat's Medical History document or your account <strong class="purple-bold">with ${otherCats[0].microchipCompany.otherCompanyName}</strong>).`;
+            } else {
+              microchipProviderText = `- The microchip provider (refer to your cat's Medical History document).`;
+            }
+
+            email += `<p>If your contact information should change in the future please contact:<br>- The vet/hospital who completed the <strong class="purple-bold">${procWord}</strong> and who has the tattoo database;<br>${microchipProviderText}</p>`;
+          } else {
+            // No microchip checked - default SmartTag message (for kittens who will get microchip at surgery)
+            const stPhrase = smartTagTimingPhrase(cats);
+            email += `<p>Our microchip provider SmartTag will send you an email <strong class="purple-bold">within 6 weeks of ${stPhrase}</strong> to ask you to set up an account. There is no cost for this, but it will be your method to keep your contact info up to date (see microchip program page sent during the contract meeting).</p>`;
+            email += `<p>Please ensure ${possessiveNames} ${idPhrase} always kept current. ${missingSentence}</p>`;
+            email += `<p>If your contact information should change in the future please contact:<br>- The vet/hospital who completed the <strong class="purple-bold">${procWord}</strong> and who has the tattoo database;<br>- The microchip provider (refer to your cat's Medical History document or your account with SmartTag).</p>`;
+          }
+        }
+
+        if (includeInsurance) {
+          // Check if all cats are already spayed/neutered (adults)
+          const allAlreadySpayed = cats.every(
+            (c) => c.category === "adult" || c.confirmedSpayed
+          );
+
+          let insuranceText;
+          if (allAlreadySpayed) {
+            // For adult cats that are already spayed - use "send it to" since PACU may have already happened
+            insuranceText = `${catNames} may qualify for a free trial pet insurance with PetSecure. If you had previously indicated an interest in insurance, please read the information sent to you. If you are now interested, please let me know and I can send you the information. If you wish to enrol, please complete the form and send it to our partner vet who completed the PACU. The vet will activate the insurance on your behalf.`;
+          } else {
+            // For kittens - use "bring it with you during" since PACU is upcoming
+            insuranceText = `${catNames} may qualify for a free trial pet insurance with PetSecure. If you had previously indicated an interest in insurance, please read the information sent to you. If you are now interested, please let me know and I can send you the information. If you wish to enrol, please complete the form and bring it with you to our partner vet during the PACU. The vet will activate the insurance on your behalf.`;
+          }
+
+          email += `<p><strong>Insurance</strong></p>
+<p>${insuranceText}</p>`;
+        }
+
+        email += `<p>Feel free to reach out directly to adoptersupport@vokra.ca for any cat behaviour or other non-emergency questions.</p>`;
+
+        if (includeFacebook) {
+          email += `<p>Join VOKRA Alumni on Facebook (<a href="https://www.facebook.com/groups/557083514316555" target="_blank" rel="noopener">VOKRA ALUMNI | Facebook</a>) and post photos of ${catNames}!</p>`;
+        }
+
+        email += `<p>Thank you for giving ${catNames} a loving and fur-ever home!</p>`;
+
+        document.getElementById("output").innerHTML = email;
+      }
+
+      function generateVetContinuationSentence(cats) {
+        // Kittens that still need surgery (not adult AND not confirmed spayed)
+        const kittensNeedingSurgery = cats.filter(
+          (c) => c.category !== "adult" && !c.confirmedSpayed
+        );
+
+        // If no kittens need surgery, just mention PACU
+        if (kittensNeedingSurgery.length === 0) {
+          if (cats.length === 1) {
+            return `You are welcome to, but there is no obligation for you to continue to attend this vet after ${cats[0].pronoun} PACU.`;
+          } else {
+            return `You are welcome to, but there is no obligation for you to continue to attend this vet after their PACU.`;
+          }
+        }
+
+        // Some kittens still need surgery
+        let surgeryText = "";
+        if (kittensNeedingSurgery.length === 1) {
+          const k = kittensNeedingSurgery[0];
+          const procedure =
+            k.gender === "female"
+              ? "spay"
+              : k.gender === "male"
+              ? "neuter"
+              : "spay/neuter";
+          surgeryText = `${k.pronoun} PACU/${procedure} surgery`;
+        } else {
+          const hasF = kittensNeedingSurgery.some((c) => c.gender === "female");
+          const hasM = kittensNeedingSurgery.some((c) => c.gender === "male");
+          if (hasF && hasM) surgeryText = `their PACU/spay/neuter surgery`;
+          else if (hasF && !hasM) surgeryText = `their PACU/spay surgery`;
+          else if (!hasF && hasM) surgeryText = `their PACU/neuter surgery`;
+          else surgeryText = `their PACU/spay/neuter surgery`;
+        }
+        return `You are welcome to, but there is no obligation for you to continue to attend this vet after ${surgeryText}.`;
+      }
+
+      function formatPhoneNumber(input) {
+        let digits = input.value.replace(/\D/g, "");
+        if (digits.length === 11 && digits.startsWith("1"))
+          digits = digits.substring(1);
+        if (digits.length === 10) {
+          input.value = `(${digits.substring(0, 3)}) ${digits.substring(
+            3,
+            6
+          )}-${digits.substring(6)}`;
+        } else if (digits.length === 7) {
+          input.value = `${digits.substring(0, 3)}-${digits.substring(3)}`;
+        }
+      }
+
+      function copyToClipboard() {
+        const output = document.getElementById("output");
+        const range = document.createRange();
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        range.selectNodeContents(output);
+        sel.addRange(range);
+        try {
+          const ok = document.execCommand("copy");
+          sel.removeAllRanges();
+          const msg = document.getElementById("copySuccess");
+          msg.textContent = ok
+            ? "Formatted email copied to clipboard! ✅"
+            : "Please manually select and copy the text above.";
+          msg.classList.add("show");
+          msg.style.color = ok ? "#28a745" : "#dc3545";
+          setTimeout(() => {
+            msg.classList.remove("show");
+            if (!ok) msg.style.color = "#28a745";
+          }, 3000);
+        } catch (e) {
+          sel.removeAllRanges();
+          const msg = document.getElementById("copySuccess");
+          msg.textContent = "Please manually select and copy the text above.";
+          msg.style.color = "#dc3545";
+          msg.classList.add("show");
+          setTimeout(() => {
+            msg.classList.remove("show");
+            msg.style.color = "#28a745";
+          }, 5000);
+        }
+      }
+
+      document
+        .getElementById("adopterName")
+        .addEventListener("input", generateEmail);
+      document.addEventListener("DOMContentLoaded", function () {
+        addCat(true);
+        try {
+          generateEmail();
+        } catch (_e) {}
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const container = document.getElementById("catsContainer");
+        const hasCat = container && container.querySelector(".cat-section");
+        if (!hasCat && typeof addCat === "function") {
+          try {
+            addCat(true);
+          } catch (e) {
+            addCat();
+          }
+        }
+        try {
+          applyThemeFromStorage();
+        } catch (_e) {}
+      });
+    </script>
+
+    <script>
+      async function copyToClipboard() {
+        const output = document.getElementById("output");
+        if (!output) return;
+
+        const clone = output.cloneNode(true);
+
+        const parseRGB = (c) => {
+          if (!c) return null;
+          const m = c.match(
+            /rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([.\d]+))?\)/i
+          );
+          if (!m) return null;
+          return [
+            parseInt(m[1]),
+            parseInt(m[2]),
+            parseInt(m[3]),
+            m[4] ? parseFloat(m[4]) : 1,
+          ];
+        };
+
+        const nearWhite = ([r, g, b]) => r > 235 && g > 235 && b > 235;
+        const nearBlack = ([r, g, b]) => r < 30 && g < 30 && b < 30;
+
+        const isColored = ([r, g, b]) => {
+          const maxv = Math.max(r, g, b),
+            minv = Math.min(r, g, b);
+          return maxv - minv >= 26;
+        };
+
+        const probe = output.cloneNode(true);
+        const wrap = document.createElement("div");
+        wrap.style.all = "initial";
+        wrap.style.color = "#111";
+        wrap.style.position = "fixed";
+        wrap.style.left = "-9999px";
+        wrap.style.top = "-9999px";
+        wrap.appendChild(probe);
+        document.body.appendChild(wrap);
+        const rootColor = getComputedStyle(probe).color;
+        const rootRGB = parseRGB(rootColor) || [17, 17, 17, 1];
+
+        const ow = document.createTreeWalker(
+          output,
+          NodeFilter.SHOW_ELEMENT,
+          null
+        );
+        const cw = document.createTreeWalker(
+          clone,
+          NodeFilter.SHOW_ELEMENT,
+          null
+        );
+
+        const process = (origEl, cloneEl) => {
+          if (cloneEl.style) {
+            cloneEl.style.background = "";
+            cloneEl.style.backgroundColor = "";
+          }
+          cloneEl.removeAttribute && cloneEl.removeAttribute("bgcolor");
+          cloneEl.removeAttribute && cloneEl.removeAttribute("class");
+
+          try {
+            const cs = getComputedStyle(origEl);
+            const rgb = parseRGB(cs && cs.color);
+            if (rgb) {
+              if (isColored(rgb) && !nearWhite(rgb) && !nearBlack(rgb)) {
+                cloneEl.style &&
+                  (cloneEl.style.color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`);
+              } else {
+                if (cloneEl.style) {
+                  cloneEl.style.removeProperty("color");
+                }
+              }
+            }
+          } catch (e) {}
+        };
+
+        process(output, clone);
+
+        while (true) {
+          const a = ow.nextNode();
+          const b = cw.nextNode();
+          if (!a || !b) break;
+          process(a, b);
+        }
+
+        document.body.removeChild(wrap);
+
+        const tmp = document.createElement("div");
+        tmp.appendChild(clone);
+
+        let cleanHtml = tmp.innerHTML;
+        cleanHtml = cleanHtml.replace(
+          /background(?:-color)?:\s*[^;"]+;?/gi,
+          ""
+        );
+        cleanHtml = cleanHtml.replace(
+          /color:\s*rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([.\d]+))?\)\s*;?/gi,
+          (m, r, g, b, a) => {
+            const R = parseInt(r),
+              G = parseInt(g),
+              B = parseInt(b);
+            const maxv = Math.max(R, G, B),
+              minv = Math.min(R, G, B);
+            const colored = maxv - minv >= 26;
+            const white = R > 235 && G > 235 && B > 235;
+            const black = R < 30 && G < 30 && B < 30;
+            return colored && !white && !black ? m : "";
+          }
+        );
+
+        const plainText = tmp.textContent.replace(/\n{3,}/g, "\n\n").trim();
+
+        try {
+          if (navigator.clipboard && window.ClipboardItem) {
+            const data = {
+              "text/html": new Blob([cleanHtml], { type: "text/html" }),
+              "text/plain": new Blob([plainText], { type: "text/plain" }),
+            };
+            await navigator.clipboard.write([new ClipboardItem(data)]);
+          } else {
+            const shadow = document.createElement("div");
+            shadow.contentEditable = "true";
+            shadow.style.position = "fixed";
+            shadow.style.opacity = "0";
+            shadow.style.pointerEvents = "none";
+            shadow.innerHTML = cleanHtml;
+            document.body.appendChild(shadow);
+
+            const range = document.createRange();
+            range.selectNodeContents(shadow);
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+            document.execCommand("copy");
+            sel.removeAllRanges();
+            shadow.remove();
+          }
+
+          showToast("✅ Formatted email copied to clipboard!", "success");
+        } catch (e) {
+          showToast(
+            "❌ Please manually select and copy the text above.",
+            "error"
+          );
+        }
+      }
+
+      // NEW: Copy Email Address function
+      async function copyEmailAddress() {
+        const emailInput = document.getElementById("adopterEmail");
+        const coEmailInput = document.getElementById("coAdopterEmail");
+        const copyBtn = document.getElementById("copyEmailBtn");
+
+        if (!emailInput || !emailInput.value) {
+          showToast("⚠️ No email address to copy", "warning");
+          return;
+        }
+
+        const primaryEmail = emailInput.value.trim();
+        const coEmail = coEmailInput ? coEmailInput.value.trim() : "";
+
+        // Validate primary email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(primaryEmail)) {
+          showToast("⚠️ Invalid email address", "warning");
+          return;
+        }
+
+        // Build email string: "primary@email.com" or "primary@email.com, co@email.com"
+        let emailToCopy = primaryEmail;
+        if (coEmail && emailRegex.test(coEmail)) {
+          emailToCopy = `${primaryEmail}, ${coEmail}`;
+        }
+
+        try {
+          await navigator.clipboard.writeText(emailToCopy);
+
+          showToast(`✅ Email copied: ${emailToCopy}`, "success");
+
+          // Optional: Animate button
+          if (copyBtn) {
+            copyBtn.textContent = "✅ Copied!";
+            setTimeout(() => {
+              copyBtn.textContent = "Copy Email Address";
+            }, 2000);
+          }
+
+          console.log("✅ Email address copied:", emailToCopy);
+        } catch (e) {
+          console.error("Failed to copy email:", e);
+
+          // Fallback: Try to select the input field
+          try {
+            emailInput.select();
+            emailInput.setSelectionRange(0, 99999); // For mobile
+            document.execCommand("copy");
+
+            showToast(`✅ Email copied: ${emailToCopy}`, "success");
+          } catch (fallbackError) {
+            showToast("❌ Please manually copy the email address", "error");
+          }
+        }
+      }
+    </script>
+
+    <!-- Segmented Date Inputs Enhancement -->
+    <script>
+      (function () {
+        const pad2 = (n) => (n > 0 && n < 10 ? "0" + n : String(n));
+        const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+        const isLeap = (y) => (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
+        function daysInMonth(y, m) {
+          if (!y || !m) return 31;
+          return [
+            31,
+            isLeap(y) ? 29 : 28,
+            31,
+            30,
+            31,
+            30,
+            31,
+            31,
+            30,
+            31,
+            30,
+            31,
+          ][m - 1];
+        }
+        function ensureOptionList(id, from, to) {
+          // This function is kept for backward compatibility but now creates select options
+          const prev = document.getElementById(id);
+          if (prev) return prev;
+          const dl = document.createElement("datalist");
+          dl.id = id;
+          for (let i = from; i <= to; i++) {
+            const opt = document.createElement("option");
+            opt.value = String(i);
+            dl.appendChild(opt);
+          }
+          document.body.appendChild(dl);
+          return dl;
+        }
+
+        function createSelectWithOptions(from, to, placeholder) {
+          const select = document.createElement("select");
+          // Add placeholder option
+          const placeholderOpt = document.createElement("option");
+          placeholderOpt.value = "";
+          placeholderOpt.textContent = placeholder;
+          placeholderOpt.disabled = true;
+          placeholderOpt.selected = true;
+          select.appendChild(placeholderOpt);
+          // Add number options
+          for (let i = from; i <= to; i++) {
+            const opt = document.createElement("option");
+            opt.value = String(i);
+            opt.textContent = String(i).padStart(2, "0");
+            select.appendChild(opt);
+          }
+          return select;
+        }
+
+        function updateSelectOptions(select, from, to, currentValue) {
+          // Keep placeholder
+          const placeholder = select.options[0];
+          select.innerHTML = "";
+          select.appendChild(placeholder);
+          // Add number options
+          for (let i = from; i <= to; i++) {
+            const opt = document.createElement("option");
+            opt.value = String(i);
+            opt.textContent = String(i).padStart(2, "0");
+            if (String(i) === String(currentValue)) {
+              opt.selected = true;
+            }
+            select.appendChild(opt);
+          }
+        }
+        function parseISO(iso) {
+          if (!iso) return null;
+          const m = /(\d{4})-(\d{2})-(\d{2})/.exec(iso);
+          if (!m) return null;
+          return { y: +m[1], m: +m[2], d: +m[3] };
+        }
+        function toISO(y, m, d) {
+          if (!y || !m || !d) return "";
+          return `${y}-${pad2(m)}-${pad2(d)}`;
+        }
+        function sanitizeNum(str) {
+          if (!str) return null;
+          const v = parseInt(String(str).replace(/[^\d]/g, ""), 10);
+          return Number.isFinite(v) ? v : null;
+        }
+        function updateDayDatalist(baseId, y, m) {
+          const max = daysInMonth(y, m);
+          const dd = document.getElementById(`${baseId}-dd`);
+          if (dd && dd.tagName === "SELECT") {
+            const currentVal = sanitizeNum(dd.value);
+            updateSelectOptions(
+              dd,
+              1,
+              max,
+              currentVal > max ? max : currentVal
+            );
+          } else if (dd) {
+            // Fallback for input with datalist
+            const ddListId = `${baseId}-dd-list`;
+            let dl = document.getElementById(ddListId);
+            if (dl) dl.remove();
+            dl = ensureOptionList(ddListId, 1, max);
+            dd.setAttribute("list", ddListId);
+          }
+        }
+        function reflectHiddenToUI(baseId) {
+          const hidden = document.getElementById(baseId);
+          const mm = document.getElementById(`${baseId}-mm`);
+          const dd = document.getElementById(`${baseId}-dd`);
+          const yy = document.getElementById(`${baseId}-yyyy`);
+          if (!hidden || !mm || !dd || !yy) return;
+          const v = parseISO(hidden.value);
+          if (v) {
+            yy.value = String(v.y);
+            mm.value = String(v.m);
+            updateDayDatalist(baseId, v.y, v.m);
+            dd.value = String(v.d);
+          } else {
+            yy.value = "";
+            mm.value = "";
+            updateDayDatalist(baseId, new Date().getFullYear(), 1);
+            dd.value = "";
+          }
+        }
+        function updateHiddenFromUI(baseId, trigger = true) {
+          const hidden = document.getElementById(baseId);
+          const mm = document.getElementById(`${baseId}-mm`);
+          const dd = document.getElementById(`${baseId}-dd`);
+          const yy = document.getElementById(`${baseId}-yyyy`);
+          if (!hidden || !mm || !dd || !yy) return;
+          let y = sanitizeNum(yy.value);
+          let m = sanitizeNum(mm.value);
+          if (m) m = clamp(m, 1, 12);
+          updateDayDatalist(baseId, y || new Date().getFullYear(), m || 1);
+          let d = sanitizeNum(dd.value);
+          const maxD = daysInMonth(y || new Date().getFullYear(), m || 1);
+          if (d) d = clamp(d, 1, maxD);
+          yy.value = y ? String(y) : "";
+          mm.value = m ? String(m) : "";
+          dd.value = d ? String(d) : "";
+          const iso = y && m && d ? toISO(y, m, d) : "";
+          const prev = hidden.value;
+          hidden.value = iso;
+          const wrap = document.getElementById(`${baseId}-wrap`);
+          if (wrap) {
+            if (iso) wrap.classList.remove("input-error");
+          }
+          if (trigger && prev !== iso) {
+            try {
+              hidden.dispatchEvent(new Event("input", { bubbles: true }));
+            } catch (e) {}
+            try {
+              hidden.dispatchEvent(new Event("change", { bubbles: true }));
+            } catch (e) {}
+            try {
+              if (typeof generateEmail === "function") generateEmail();
+            } catch (e) {}
+          }
+        }
+        window.enhanceDateInput = function (baseId, opts = {}) {
+          const hidden = document.getElementById(baseId);
+          if (!hidden || hidden.dataset.enhanced === "1") return;
+          let initVal = hidden.value;
+          try {
+            if (hidden.type && hidden.type.toLowerCase() === "date")
+              initVal = hidden.value;
+          } catch (e) {}
+          hidden.type = "hidden";
+          hidden.dataset.enhanced = "1";
+          if (initVal) hidden.value = initVal;
+
+          const wrap = document.createElement("div");
+          wrap.className = "date-grid";
+          wrap.id = `${baseId}-wrap`;
+
+          // Month select (1-12)
+          const mm = createSelectWithOptions(1, 12, "MM");
+          mm.id = `${baseId}-mm`;
+
+          // Day select (1-31, will be updated based on month)
+          const dd = createSelectWithOptions(1, 31, "DD");
+          dd.id = `${baseId}-dd`;
+
+          // Year input (text for flexibility)
+          const yy = document.createElement("input");
+          yy.id = `${baseId}-yyyy`;
+          yy.setAttribute("inputmode", "numeric");
+          yy.setAttribute("placeholder", "YYYY");
+          yy.setAttribute("maxlength", "4");
+
+          [mm, dd, yy].forEach((el) => {
+            el.addEventListener("input", () =>
+              updateHiddenFromUI(baseId, true)
+            );
+            el.addEventListener("change", () =>
+              updateHiddenFromUI(baseId, true)
+            );
+            el.addEventListener("blur", () => updateHiddenFromUI(baseId, true));
+          });
+
+          // Update day options when month changes
+          mm.addEventListener("change", () => {
+            const y = sanitizeNum(yy.value) || 2024;
+            const m = sanitizeNum(mm.value);
+            if (m) {
+              const max = daysInMonth(y, m);
+              const currentDay = sanitizeNum(dd.value);
+              updateSelectOptions(
+                dd,
+                1,
+                max,
+                currentDay > max ? max : currentDay
+              );
+            }
+          });
+
+          if (opts.readOnly) {
+            mm.disabled = true;
+            dd.disabled = true;
+            yy.readOnly = true;
+          }
+
+          wrap.appendChild(mm);
+          wrap.appendChild(dd);
+          wrap.appendChild(yy);
+          hidden.insertAdjacentElement("afterend", wrap);
+          reflectHiddenToUI(baseId);
+        };
+        window.updateDateUIFromHidden = function (baseId) {
+          reflectHiddenToUI(baseId);
+        };
+
+        const oldMarkInvalid = window.markInvalid;
+        const oldClearInvalid = window.clearInvalid;
+        window.markInvalid = function (el) {
+          if (el) {
+            const wrap = document.getElementById(`${el.id}-wrap`);
+            if (wrap) {
+              wrap.classList.add("input-error");
+              return;
+            }
+          }
+          if (typeof oldMarkInvalid === "function") oldMarkInvalid(el);
+        };
+        window.clearInvalid = function (el) {
+          if (el) {
+            const wrap = document.getElementById(`${el.id}-wrap`);
+            if (wrap) {
+              wrap.classList.remove("input-error");
+              return;
+            }
+          }
+          if (typeof oldClearInvalid === "function") oldClearInvalid(el);
+        };
+
+        function patchFunction(name, after) {
+          if (typeof window[name] === "function") {
+            const _orig = window[name];
+            window[name] = function () {
+              const r = _orig.apply(this, arguments);
+              try {
+                after.apply(this, arguments);
+              } catch (e) {}
+              return r;
+            };
+          }
+        }
+        patchFunction("updateFromDOB", function (index) {
+          if (typeof index === "number") {
+            if (document.getElementById(`spayNeuterDate-${index}`)) {
+              updateDateUIFromHidden(`spayNeuterDate-${index}`);
+            }
+            if (
+              document.getElementById(`catDob-${index}`) &&
+              !document.getElementById(`catDob-${index}-wrap`)
+            ) {
+              enhanceDateInput(`catDob-${index}`);
+            }
+          }
+        });
+        patchFunction("addCat", function () {
+          const maybe = window.catCount != null ? window.catCount - 1 : null;
+          if (maybe != null) {
+            if (document.getElementById(`catDob-${maybe}`))
+              enhanceDateInput(`catDob-${maybe}`);
+            if (document.getElementById(`spayNeuterDate-${maybe}`))
+              enhanceDateInput(`spayNeuterDate-${maybe}`, { readOnly: true });
+          }
+        });
+        patchFunction("createCatSection", function (index) {
+          if (typeof index === "number") {
+            if (document.getElementById(`catDob-${index}`))
+              enhanceDateInput(`catDob-${index}`);
+            if (document.getElementById(`spayNeuterDate-${index}`))
+              enhanceDateInput(`spayNeuterDate-${index}`);
+          }
+        });
+
+        const obs = new MutationObserver((mutations) => {
+          for (const m of mutations) {
+            for (const node of m.addedNodes) {
+              if (!(node instanceof HTMLElement)) continue;
+              const inputs = node.querySelectorAll
+                ? node.querySelectorAll("input[id]")
+                : [];
+              inputs.forEach((el) => {
+                if (/^(catDob|spayNeuterDate)-(\d+)$/.test(el.id)) {
+                  if (el.id.startsWith("catDob-")) enhanceDateInput(el.id);
+                  if (el.id.startsWith("spayNeuterDate-"))
+                    enhanceDateInput(el.id);
+                }
+              });
+            }
+          }
+        });
+        obs.observe(document.documentElement, {
+          childList: true,
+          subtree: true,
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+          if (document.getElementById("pacuDate")) enhanceDateInput("pacuDate");
+          if (document.getElementById("vaccineDate"))
+            enhanceDateInput("vaccineDate");
+        });
+      })();
+    </script>
+
+    <!-- ============================================ -->
+    <!-- VOKRA Extension Import Enhancement Script   -->
+    <!-- Added for automatic data import from extension -->
+    <!-- Version: 2.6.0 - DUAL CAT SUPPORT         -->
+    <!-- ============================================ -->
+
+    <script>
+      (function () {
+        "use strict";
+
+        console.log("🔌 VOKRA Import Enhancement v2.4.2 loaded");
+
+        // Add Import button to the UI
+        function addImportButton() {
+          // Wait for DOM to be ready
+          const toolbar = document.querySelector(".toolbar");
+          if (!toolbar) {
+            console.log("Toolbar not found, retrying...");
+            setTimeout(addImportButton, 500);
+            return;
+          }
+
+          // Check if button already exists
+          if (document.getElementById("vokra-import-btn")) {
+            return;
+          }
+
+          // Create import button
+          const importBtn = document.createElement("button");
+          importBtn.id = "vokra-import-btn";
+          importBtn.className = "reset-btn";
+          importBtn.style.marginRight = "10px";
+          importBtn.style.background =
+            "linear-gradient(135deg, #2196F3, #1976D2)";
+          importBtn.style.color = "white";
+          importBtn.innerHTML = "Import from Extension";
+          importBtn.title = "Import data copied from VOKRA Extension";
+
+          importBtn.onclick = importFromExtension;
+
+          // Insert before the reset button
+          const resetBtn = toolbar.querySelector(".reset-btn");
+          if (resetBtn) {
+            toolbar.insertBefore(importBtn, resetBtn);
+          } else {
+            toolbar.insertBefore(importBtn, toolbar.firstChild);
+          }
+
+          console.log("✅ Import button added");
+        }
+
+        // Import data from various sources
+        function importFromExtension() {
+          console.log("🔍 Checking for import data...");
+
+          // Method 1: Check URL parameters
+          const urlData = checkURLParams();
+          if (urlData) {
+            console.log("✅ Found data in URL");
+            fillFormWithData(urlData);
+            showToast("Data imported from URL!", "success");
+            return;
+          }
+
+          // Method 2: Check localStorage
+          const storageData = checkLocalStorage();
+          if (storageData) {
+            console.log("✅ Found data in localStorage");
+            fillFormWithData(storageData);
+            showToast("Data imported from extension!", "success");
+            return;
+          }
+
+          // Method 3: Try to parse clipboard (ask user)
+          tryClipboardImport();
+        }
+
+        // Check URL parameters
+        function checkURLParams() {
+          const params = new URLSearchParams(window.location.search);
+          if (!params.has("catName") && !params.has("adopterName")) {
+            return null;
+          }
+
+          return {
+            catName: params.get("catName"),
+            catGender: params.get("catGender"),
+            catDob: params.get("catDob"),
+            spayNeuterDate: params.get("spayNeuterDate"),
+            pacuDate: params.get("pacuDate"),
+            vaccineDate: params.get("vaccineDate"),
+            adoptionDate: params.get("adoptionDate"),
+            adopterName: params.get("adopterName"),
+            adopterEmail: params.get("adopterEmail"),
+            // Support both field names for microchip
+            microchipStatus:
+              params.get("microchipStatus") || params.get("catMicrochip"),
+          };
+        }
+
+        // Check localStorage
+        function checkLocalStorage() {
+          try {
+            const data = localStorage.getItem("vokra_generator_import");
+            const time = localStorage.getItem("vokra_generator_import_time");
+
+            if (!data) {
+              return null;
+            }
+
+            // Check if data is fresh (within last 10 minutes)
+            if (time) {
+              const importTime = new Date(time);
+              const now = new Date();
+              const diffMinutes = (now - importTime) / 1000 / 60;
+
+              if (diffMinutes > 10) {
+                console.log("⚠️ Import data is too old (>10 min)");
+                return null;
+              }
+            }
+
+            return JSON.parse(data);
+          } catch (e) {
+            console.error("Error reading localStorage:", e);
+            return null;
+          }
+        }
+
+        // Try to get data from clipboard
+        function tryClipboardImport() {
+          if (navigator.clipboard && navigator.clipboard.readText) {
+            navigator.clipboard
+              .readText()
+              .then((text) => {
+                try {
+                  // Try to parse as JSON
+                  const data = JSON.parse(text);
+                  if (data.catName || data.adopterName) {
+                    fillFormWithData(data);
+                    showToast("Data imported from clipboard!", "success");
+                  } else {
+                    showToast("No valid data in clipboard", "warning");
+                  }
+                } catch (e) {
+                  showToast("Clipboard does not contain valid JSON", "warning");
+                  console.log("Clipboard content:", text);
+                }
+              })
+              .catch((err) => {
+                showToast(
+                  "Could not read clipboard. Please copy data first.",
+                  "error"
+                );
+              });
+          } else {
+            // Fallback: Show paste dialog
+            showPasteDialog();
+          }
+        }
+
+        // Show manual paste dialog
+        function showPasteDialog() {
+          const dialog = document.createElement("div");
+          dialog.innerHTML = `
+      <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 999999; display: flex; align-items: center; justify-content: center;">
+        <div style="background: white; border-radius: 12px; padding: 30px; max-width: 500px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+          <h3 style="margin: 0 0 20px 0; color: #333;">📥 Paste JSON Data</h3>
+          <p style="color: #666; margin-bottom: 15px;">Paste the JSON data copied from the extension:</p>
+          <textarea id="paste-json-input" style="width: 100%; height: 200px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-family: monospace; font-size: 12px; resize: vertical;" placeholder='{"catName": "..."}'>
+          </textarea>
+          <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button id="paste-import-btn" style="flex: 1; padding: 10px; background: var(--color-primary); color: white; border: none; border-radius: var(--radius-sm); cursor: pointer; font-weight: 500; font-family: inherit; font-size: 13px;">
+              Import
+            </button>
+            <button id="paste-cancel-btn" style="flex: 1; padding: 12px; background: #e0e0e0; color: #333; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+
+          document.body.appendChild(dialog);
+
+          const textarea = dialog.querySelector("#paste-json-input");
+          const importBtn = dialog.querySelector("#paste-import-btn");
+          const cancelBtn = dialog.querySelector("#paste-cancel-btn");
+
+          textarea.focus();
+
+          importBtn.onclick = () => {
+            try {
+              const data = JSON.parse(textarea.value);
+              fillFormWithData(data);
+              showToast("Data imported successfully!", "success");
+              dialog.remove();
+            } catch (e) {
+              showToast("Invalid JSON format", "error");
+              console.error("JSON parse error:", e);
+            }
+          };
+
+          cancelBtn.onclick = () => {
+            dialog.remove();
+          };
+
+          dialog.addEventListener("click", (e) => {
+            if (e.target === dialog) {
+              dialog.remove();
+            }
+          });
+        }
+
+        // Fill form with imported data
+
+        // ============================================
+        // SMART IMPORT FUNCTIONS
+        // ============================================
+
+        // Toggle import section visibility
+        window.toggleImportSection = function () {
+          const section = document.getElementById("importSection");
+          const icon = document.getElementById("toggleImportIcon");
+          const btn = document.getElementById("toggleImportBtn");
+
+          if (
+            section.style.display === "none" ||
+            section.style.display === ""
+          ) {
+            section.style.display = "block";
+            icon.textContent = "▲";
+            btn.style.background = "var(--color-surface-hover)";
+            btn.style.borderStyle = "solid";
+            btn.style.color = "var(--color-text)";
+          } else {
+            section.style.display = "none";
+            icon.textContent = "▼";
+            btn.style.background = "var(--color-surface)";
+            btn.style.borderStyle = "dashed";
+            btn.style.color = "var(--color-text-secondary)";
+          }
+        };
+
+        // Manual import button handler
+        window.manualImport = function () {
+          console.log("🔘 Import button clicked");
+
+          const importBox = document.getElementById("importBox");
+          const statusDiv = document.getElementById("importStatus");
+          const text = importBox.value.trim();
+
+          console.log("📝 Import box content length:", text.length);
+          console.log("📝 Import box content:", text.substring(0, 100) + "...");
+
+          if (!text) {
+            showImportStatus("⚠️ Please paste JSON data first", "error");
+            return;
+          }
+
+          try {
+            const data = JSON.parse(text);
+            console.log("✅ JSON parsed successfully:", data);
+
+            // Check if data has expected fields
+            const hasData = data.catName || data.adopterName || data.pacuDate;
+            if (!hasData) {
+              showImportStatus(
+                "⚠️ JSON appears to be empty or invalid",
+                "error"
+              );
+              console.warn("No expected fields found in JSON");
+              return;
+            }
+
+            // Fill the form with imported data
+            console.log("🔄 Starting to fill form...");
+            fillFormWithData(data);
+
+            // Show success message
+            showImportStatus("✅ Data imported successfully!", "success");
+
+            // Scroll to form after a delay
+            setTimeout(() => {
+              const firstInput = document.getElementById("adopterName");
+              if (firstInput) {
+                firstInput.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                });
+              }
+            }, 500);
+          } catch (e) {
+            console.error("❌ Import error:", e);
+            console.error("Error details:", e.message);
+            showImportStatus(
+              "❌ Invalid JSON format. Error: " + e.message,
+              "error"
+            );
+          }
+        };
+
+        // Clear import box
+        window.clearImportBox = function () {
+          document.getElementById("importBox").value = "";
+          document.getElementById("importStatus").style.display = "none";
+          console.log("🗑️ Import box cleared");
+        };
+
+        // Show import status message
+        function showImportStatus(message, type) {
+          const statusDiv = document.getElementById("importStatus");
+          statusDiv.style.display = "block";
+          statusDiv.textContent = message;
+
+          if (type === "success") {
+            statusDiv.style.background = "#d4edda";
+            statusDiv.style.color = "#155724";
+            statusDiv.style.border = "1px solid #c3e6cb";
+          } else if (type === "error") {
+            statusDiv.style.background = "#f8d7da";
+            statusDiv.style.color = "#721c24";
+            statusDiv.style.border = "1px solid #f5c6cb";
+          }
+
+          console.log("📊 Status shown:", type, message);
+
+          // Auto-hide success messages after 3 seconds
+          if (type === "success") {
+            setTimeout(() => {
+              statusDiv.style.display = "none";
+            }, 3000);
+          }
+        }
+
+        // ============================================
+        // FORM FILLING FUNCTION
+        // ============================================
+
+        function fillFormWithData(data) {
+          console.log("📝 Filling form with data:", data);
+          console.log("📋 Data keys:", Object.keys(data));
+          console.log("📋 Data values:", Object.values(data));
+
+          // ============================================
+          // DETECT DUAL CAT DATA FORMAT
+          // ============================================
+          const isDualCatFormat = data.cats && Array.isArray(data.cats);
+          console.log("🐱 Dual cat format detected:", isDualCatFormat);
+
+          if (isDualCatFormat) {
+            console.log("🐱🐱 Processing DUAL CAT data...");
+            console.log("  Cat 1:", data.cats[0]);
+            console.log("  Cat 2:", data.cats[1]);
+          }
+
+          // Fill adopter name - ONLY FIRST NAME
+          if (data.adopterName) {
+            const adopterInput = document.getElementById("adopterName");
+            if (adopterInput) {
+              // Extract first name only (before first space)
+              const firstName = data.adopterName.trim().split(/\s+/)[0];
+              adopterInput.value = firstName;
+              console.log(
+                "✓ Set adopter name:",
+                data.adopterName,
+                "→ First name only:",
+                firstName
+              );
+            } else {
+              console.error("❌ adopterName input not found!");
+            }
+          }
+
+          // Fill adopter email
+          if (data.adopterEmail) {
+            const emailInput = document.getElementById("adopterEmail");
+            if (emailInput) {
+              emailInput.value = data.adopterEmail;
+              console.log("✓ Set adopter email:", data.adopterEmail);
+            } else {
+              console.error("❌ adopterEmail input not found!");
+            }
+          }
+
+          // Fill co-adopter name - ONLY FIRST NAME
+          if (data.coAdopterName) {
+            const coAdopterInput = document.getElementById("coAdopterName");
+            if (coAdopterInput) {
+              // Extract first name only (before first space)
+              const firstName = data.coAdopterName.trim().split(/\s+/)[0];
+              coAdopterInput.value = firstName;
+              console.log(
+                "✓ Set co-adopter name:",
+                data.coAdopterName,
+                "→ First name only:",
+                firstName
+              );
+            } else {
+              console.error("❌ coAdopterName input not found!");
+            }
+          }
+
+          // Fill co-adopter email
+          if (data.coAdopterEmail) {
+            const coEmailInput = document.getElementById("coAdopterEmail");
+            if (coEmailInput) {
+              coEmailInput.value = data.coAdopterEmail;
+              console.log("✓ Set co-adopter email:", data.coAdopterEmail);
+            } else {
+              console.error("❌ coAdopterEmail input not found!");
+            }
+          }
+
+          // ============================================
+          // IMPROVED: Extract PACU/Vaccine from cats array
+          // ============================================
+          // For dual cat format, PACU and Vaccine dates are stored in cats[0]
+          // For backward compatibility, also check top-level fields
+          let pacuDateToUse = data.pacuDate;
+          let vaccineDateToUse = data.vaccineDate;
+
+          if (isDualCatFormat && data.cats && data.cats.length > 0) {
+            // Use Cat 1's dates (since they're usually the same for littermates)
+            if (data.cats[0].pacuDate) {
+              pacuDateToUse = data.cats[0].pacuDate;
+              console.log("📌 Using PACU date from cats[0]:", pacuDateToUse);
+            }
+            if (data.cats[0].vaccineDate) {
+              vaccineDateToUse = data.cats[0].vaccineDate;
+              console.log(
+                "📌 Using Vaccine date from cats[0]:",
+                vaccineDateToUse
+              );
+            }
+          }
+
+          // Fill PACU date
+          if (pacuDateToUse) {
+            const pacuInput = document.getElementById("pacuDate");
+            if (pacuInput) {
+              const formattedDate = convertToISODate(pacuDateToUse);
+
+              // Method 1: Direct assignment
+              pacuInput.value = formattedDate;
+
+              // Method 2: Try setAttribute as fallback
+              pacuInput.setAttribute("value", formattedDate);
+
+              console.log(
+                "✓ Set PACU date:",
+                pacuDateToUse,
+                "→",
+                formattedDate
+              );
+              if (window.updateDateUIFromHidden)
+                window.updateDateUIFromHidden("pacuDate");
+              console.log("  PACU input.value:", pacuInput.value);
+              console.log(
+                "  PACU getAttribute:",
+                pacuInput.getAttribute("value")
+              );
+
+              // Method 3: Trigger multiple events
+              pacuInput.dispatchEvent(new Event("change", { bubbles: true }));
+              pacuInput.dispatchEvent(new Event("input", { bubbles: true }));
+
+              // Method 4: Force reflow/repaint
+              void pacuInput.offsetHeight;
+
+              // Method 5: Blur and focus to trigger visual update
+              pacuInput.blur();
+              pacuInput.focus();
+              pacuInput.blur();
+            } else {
+              console.error("❌ pacuDate input not found!");
+            }
+          } else {
+            console.log(
+              "⚠️ No pacuDate in data (checked both top-level and cats[0])"
+            );
+          }
+
+          // Fill vaccine date
+          if (vaccineDateToUse) {
+            const vaccineInput = document.getElementById("vaccineDate");
+            if (vaccineInput) {
+              const formattedDate = convertToISODate(vaccineDateToUse);
+
+              // Method 1: Direct assignment
+              vaccineInput.value = formattedDate;
+
+              // Method 2: Try setAttribute as fallback
+              vaccineInput.setAttribute("value", formattedDate);
+
+              console.log(
+                "✓ Set vaccine date:",
+                vaccineDateToUse,
+                "→",
+                formattedDate
+              );
+              if (window.updateDateUIFromHidden)
+                window.updateDateUIFromHidden("vaccineDate");
+              console.log("  Vaccine input.value:", vaccineInput.value);
+              console.log(
+                "  Vaccine getAttribute:",
+                vaccineInput.getAttribute("value")
+              );
+
+              // Method 3: Trigger multiple events
+              vaccineInput.dispatchEvent(
+                new Event("change", { bubbles: true })
+              );
+              vaccineInput.dispatchEvent(new Event("input", { bubbles: true }));
+
+              // Method 4: Force reflow/repaint
+              void vaccineInput.offsetHeight;
+
+              // Method 5: Blur and focus to trigger visual update
+              vaccineInput.blur();
+              vaccineInput.focus();
+              vaccineInput.blur();
+            } else {
+              console.error("❌ vaccineDate input not found!");
+            }
+          } else {
+            console.log(
+              "⚠️ No vaccineDate in data (checked both top-level and cats[0])"
+            );
+          }
+
+          // ============================================
+          // HANDLE CAT FORMS - DUAL CAT SUPPORT
+          // ============================================
+
+          // Ensure at least one cat form exists
+          const catsContainer = document.getElementById("catsContainer");
+          if (catsContainer && catsContainer.children.length === 0) {
+            console.log("📦 Adding first cat form...");
+            if (typeof addCat === "function") {
+              addCat(true); // silent = true
+            }
+          }
+
+          // For dual cat format, ensure second cat form exists ONLY if we have 2 valid cats
+          if (isDualCatFormat) {
+            // Count valid cats (cats with names)
+            const validCatsCount = data.cats.filter(
+              (cat) => cat && cat.catName && cat.catName.trim() !== ""
+            ).length;
+            console.log(`📦 Detected ${validCatsCount} valid cat(s)`);
+
+            if (validCatsCount >= 2) {
+              console.log(
+                "📦 Dual cat detected - checking if second cat form exists..."
+              );
+              const currentCatCount = catsContainer.children.length;
+              console.log("  Current cat forms:", currentCatCount);
+
+              if (currentCatCount < 2) {
+                console.log("📦 Adding second cat form automatically...");
+                if (typeof addCat === "function") {
+                  addCat(true); // silent = true
+                }
+              }
+            } else {
+              console.log("📦 Single cat mode - will not add second form");
+            }
+          }
+
+          // Wait a bit for cat form(s) to be created
+          setTimeout(() => {
+            // Debug: List all input/select elements with IDs
+            const allInputs = document.querySelectorAll(
+              "input[id], select[id]"
+            );
+            console.log(
+              "🔍 Available form elements:",
+              Array.from(allInputs)
+                .map((el) => el.id)
+                .filter((id) => id)
+            );
+
+            // ============================================
+            // FILL CAT DATA - SUPPORT BOTH FORMATS
+            // ============================================
+
+            if (isDualCatFormat) {
+              // NEW DUAL CAT FORMAT
+              console.log("🐱🐱 Filling DUAL CAT data...");
+
+              // Filter out empty cats (double safety check)
+              const validCats = data.cats.filter(
+                (cat) => cat && cat.catName && cat.catName.trim() !== ""
+              );
+              console.log(
+                `  Found ${validCats.length} valid cat(s) (filtered from ${data.cats.length} total)`
+              );
+
+              validCats.forEach((cat, index) => {
+                console.log(`\n📝 Filling Cat ${index + 1}:`, cat);
+                fillSingleCatData(cat, index);
+              });
+            } else {
+              // OLD SINGLE CAT FORMAT (backward compatibility)
+              console.log("🐱 Filling SINGLE CAT data (legacy format)...");
+              fillSingleCatData(data, 0);
+            }
+
+            // Final verification: Check all date field values
+            console.log("\n🔍 Final date field verification:");
+            const pacuFinal = document.getElementById("pacuDate");
+            const vaccineFinal = document.getElementById("vaccineDate");
+            const dobFinal0 = document.getElementById("catDob-0");
+            const dobFinal1 = document.getElementById("catDob-1");
+
+            console.log(
+              "  - PACU Date field value:",
+              pacuFinal ? `"${pacuFinal.value}"` : "NOT FOUND"
+            );
+            console.log(
+              "  - Vaccine Date field value:",
+              vaccineFinal ? `"${vaccineFinal.value}"` : "NOT FOUND"
+            );
+            console.log(
+              "  - Cat 1 DOB field value:",
+              dobFinal0 ? `"${dobFinal0.value}"` : "NOT FOUND"
+            );
+            console.log(
+              "  - Cat 2 DOB field value:",
+              dobFinal1 ? `"${dobFinal1.value}"` : "NOT FOUND"
+            );
+
+            // Trigger email generation
+            if (typeof generateEmail === "function") {
+              generateEmail();
+              console.log("✓ Generated email");
+            }
+
+            console.log("\n✅ Form filling complete!");
+          }, 300);
+        }
+
+        // ============================================
+        // NEW HELPER: Fill single cat's data
+        // ============================================
+        function fillSingleCatData(catData, index) {
+          console.log(`  📝 Processing cat ${index}:`, catData);
+
+          // Fill cat name
+          if (catData.catName) {
+            const catNameInput = document.getElementById(`catName-${index}`);
+            if (catNameInput) {
+              catNameInput.value = catData.catName;
+              console.log(`  ✓ Set cat ${index} name:`, catData.catName);
+              catNameInput.dispatchEvent(
+                new Event("change", { bubbles: true })
+              );
+            } else {
+              console.error(`  ❌ catName-${index} input not found!`);
+            }
+          }
+
+          // Fill cat gender
+          if (catData.catGender) {
+            const catGenderSelect = document.getElementById(
+              `catGender-${index}`
+            );
+            if (catGenderSelect) {
+              // Map gender values - support multiple formats
+              const genderMap = {
+                Male: "male",
+                Female: "female",
+                M: "male",
+                F: "female",
+                male: "male",
+                female: "female",
+                MALE: "male",
+                FEMALE: "female",
+              };
+              const mappedGender =
+                genderMap[catData.catGender] || catData.catGender.toLowerCase();
+              catGenderSelect.value = mappedGender;
+              console.log(
+                `  ✓ Set cat ${index} gender:`,
+                catData.catGender,
+                "→",
+                mappedGender
+              );
+              console.log(
+                `    Available options:`,
+                Array.from(catGenderSelect.options).map((o) => o.value)
+              );
+              catGenderSelect.dispatchEvent(
+                new Event("change", { bubbles: true })
+              );
+            } else {
+              console.error(`  ❌ catGender-${index} select not found!`);
+            }
+          }
+
+          // Handle DOB - support both catDob and catDOB
+          const dobData = catData.catDob || catData.catDOB;
+          if (dobData) {
+            const catDobInput = document.getElementById(`catDob-${index}`);
+            if (catDobInput) {
+              const formattedDate = convertToISODate(dobData);
+
+              // Method 1: Direct assignment
+              catDobInput.value = formattedDate;
+
+              // Method 2: Try setAttribute as fallback
+              catDobInput.setAttribute("value", formattedDate);
+
+              console.log(
+                `  ✓ Set cat ${index} DOB:`,
+                dobData,
+                "→",
+                formattedDate
+              );
+              if (window.updateDateUIFromHidden)
+                window.updateDateUIFromHidden(`catDob-${index}`);
+              console.log(`    DOB input.value:`, catDobInput.value);
+              console.log(
+                `    DOB getAttribute:`,
+                catDobInput.getAttribute("value")
+              );
+
+              // Method 3: Trigger multiple events
+              catDobInput.dispatchEvent(new Event("change", { bubbles: true }));
+              catDobInput.dispatchEvent(new Event("input", { bubbles: true }));
+
+              // Method 4: Force reflow/repaint
+              void catDobInput.offsetHeight;
+
+              // Method 5: Blur and focus to trigger visual update
+              catDobInput.blur();
+              catDobInput.focus();
+              catDobInput.blur();
+            } else {
+              console.error(`  ❌ catDob-${index} input not found!`);
+            }
+          } else {
+            console.log(`  ⚠️ No catDob/catDOB for cat ${index}`);
+          }
+
+          // Fill spay/neuter date - support both spayNeuterDate and spayNeuterStatus
+          if (
+            catData.spayNeuterDate &&
+            catData.spayNeuterDate !== "None" &&
+            !catData.spayNeuterDate.includes("Not yet")
+          ) {
+            const spayInput = document.getElementById(
+              `spayNeuterDate-${index}`
+            );
+            if (spayInput) {
+              const formattedDate = convertToISODate(catData.spayNeuterDate);
+              spayInput.value = formattedDate;
+              console.log(
+                `  ✓ Set cat ${index} spay/neuter date:`,
+                formattedDate
+              );
+              spayInput.dispatchEvent(new Event("change", { bubbles: true }));
+            }
+          } else if (catData.spayNeuterStatus === "Yes") {
+            // Extension provides spayNeuterStatus instead of date
+            // Check the "Confirmed spayed/neutered" checkbox
+            const confirmedCheckbox = document.getElementById(
+              `confirmedSpayed-${index}`
+            );
+            if (confirmedCheckbox) {
+              confirmedCheckbox.checked = true;
+              console.log(`  ✓ Set cat ${index} confirmed spayed checkbox`);
+              confirmedCheckbox.dispatchEvent(
+                new Event("change", { bubbles: true })
+              );
+            }
+          }
+
+          // Handle microchip - support extension format (catMicrochip + catMicrochipIssuer)
+          const microchipData = catData.catMicrochip || catData.microchipStatus;
+          const microchipIssuer = catData.catMicrochipIssuer;
+
+          if (
+            microchipData &&
+            microchipData !== "None" &&
+            microchipData !== ""
+          ) {
+            const microchipCheckbox = document.getElementById(
+              `hasMicrochip-${index}`
+            );
+            if (microchipCheckbox) {
+              microchipCheckbox.checked = true;
+              console.log(`  ✓ Set cat ${index} microchip checkbox`);
+
+              // Trigger the checkbox change event to show input
+              microchipCheckbox.dispatchEvent(
+                new Event("change", { bubbles: true })
+              );
+
+              // Wait for input to appear
+              setTimeout(() => {
+                const microchipInput = document.getElementById(
+                  `microchipNumber-${index}`
+                );
+                if (microchipInput && microchipData) {
+                  microchipInput.value = microchipData;
+                  console.log(
+                    `  ✓ Set cat ${index} microchip number:`,
+                    microchipData
+                  );
+                  microchipInput.dispatchEvent(
+                    new Event("change", { bubbles: true })
+                  );
+                }
+
+                // Handle microchip issuer/company
+                if (microchipIssuer) {
+                  console.log(
+                    `  📋 Processing microchip issuer:`,
+                    microchipIssuer
+                  );
+
+                  // Map issuer names to radio button values
+                  const issuerLower = microchipIssuer.toLowerCase();
+                  let radioValue = null;
+
+                  if (
+                    issuerLower.includes("smart") ||
+                    issuerLower.includes("tag")
+                  ) {
+                    radioValue = "smartTag";
+                  } else if (
+                    issuerLower.includes("bc") ||
+                    issuerLower.includes("pet") ||
+                    issuerLower.includes("registry")
+                  ) {
+                    radioValue = "bcPetRegistry";
+                  } else {
+                    radioValue = "other";
+                  }
+
+                  // Set the appropriate radio button
+                  const radioButton = document.getElementById(
+                    `${radioValue}-${index}`
+                  );
+                  if (radioButton) {
+                    radioButton.checked = true;
+                    console.log(
+                      `  ✓ Set cat ${index} microchip company:`,
+                      microchipIssuer,
+                      "→",
+                      radioValue
+                    );
+                    radioButton.dispatchEvent(
+                      new Event("change", { bubbles: true })
+                    );
+
+                    // If "other", also fill in the company name
+                    if (radioValue === "other") {
+                      setTimeout(() => {
+                        const otherInput = document.getElementById(
+                          `otherCompanyName-${index}`
+                        );
+                        if (otherInput) {
+                          otherInput.value = microchipIssuer;
+                          console.log(
+                            `  ✓ Set cat ${index} other company name:`,
+                            microchipIssuer
+                          );
+                          otherInput.dispatchEvent(
+                            new Event("change", { bubbles: true })
+                          );
+                        }
+                      }, 150);
+                    }
+                  }
+                }
+              }, 100);
+            }
+          }
+
+          // Handle ear tag / tattoo - NEW in v2.6.4 + IMPROVED to auto-fill hospital name
+          const earTagData = catData.catEarTag;
+          const earTagIssuer = catData.catEarTagIssuer;
+
+          if (earTagData && earTagData !== "" && earTagData !== "None") {
+            const tattooCheckbox = document.getElementById(
+              `hasTattoo-${index}`
+            );
+            if (tattooCheckbox) {
+              tattooCheckbox.checked = true;
+              console.log(`  ✓ Set cat ${index} tattoo checkbox`);
+
+              // Trigger the checkbox change event to show tattoo details
+              tattooCheckbox.dispatchEvent(
+                new Event("change", { bubbles: true })
+              );
+
+              // Wait for tattoo details section to appear
+              setTimeout(() => {
+                // Fill tattoo number
+                const tattooNumberInput = document.getElementById(
+                  `tattooNumber-${index}`
+                );
+                if (tattooNumberInput) {
+                  tattooNumberInput.value = earTagData;
+                  console.log(
+                    `  ✓ Set cat ${index} tattoo number:`,
+                    earTagData
+                  );
+                  tattooNumberInput.dispatchEvent(
+                    new Event("change", { bubbles: true })
+                  );
+                } else {
+                  console.error(
+                    `  ❌ tattooNumber-${index} input not found after checkbox trigger!`
+                  );
+                }
+
+                // IMPROVED: Auto-fill hospital name from ear tag issuer
+                if (
+                  earTagIssuer &&
+                  earTagIssuer !== "" &&
+                  earTagIssuer !== "None"
+                ) {
+                  const hospitalNameInput = document.getElementById(
+                    `hospitalName-${index}`
+                  );
+                  if (hospitalNameInput) {
+                    hospitalNameInput.value = earTagIssuer;
+                    console.log(
+                      `  ✓ Set cat ${index} hospital name from ear tag issuer:`,
+                      earTagIssuer
+                    );
+                    hospitalNameInput.dispatchEvent(
+                      new Event("change", { bubbles: true })
+                    );
+                    // Check for VOKRA warning
+                    checkVokraHospitalName(index);
+                  } else {
+                    console.error(
+                      `  ❌ hospitalName-${index} input not found!`
+                    );
+                  }
+                } else {
+                  console.log(
+                    `  ℹ️ No ear tag issuer for cat ${index}, hospital name not auto-filled`
+                  );
+                }
+              }, 150);
+            } else {
+              console.error(`  ❌ hasTattoo-${index} checkbox not found!`);
+            }
+          } else {
+            console.log(
+              `  ⚠️ No earTag for cat ${index} (value: ${earTagData})`
+            );
+          }
+        }
+
+        // Convert various date formats to ISO (YYYY-MM-DD)
+        function convertToISODate(dateStr) {
+          if (!dateStr) return "";
+
+          // If already in ISO format
+          if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+            return dateStr;
+          }
+
+          // If in MM/DD/YYYY format
+          if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateStr)) {
+            const [month, day, year] = dateStr.split("/");
+            return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+          }
+
+          // Try to parse as Date
+          try {
+            const date = new Date(dateStr);
+            if (!isNaN(date.getTime())) {
+              const year = date.getFullYear();
+              const month = String(date.getMonth() + 1).padStart(2, "0");
+              const day = String(date.getDate()).padStart(2, "0");
+              return `${year}-${month}-${day}`;
+            }
+          } catch (e) {
+            console.error("Date conversion error:", e);
+          }
+
+          return dateStr;
+        }
+
+        // Show toast notification
+        function showToast(message, type = "info") {
+          // Try to use existing toast system
+          if (typeof showToastNotification === "function") {
+            showToastNotification(message, type);
+            return;
+          }
+
+          // Fallback: Create simple toast
+          const toast = document.createElement("div");
+          const colors = {
+            success: "#5da283",
+            error: "#e8384f",
+            warning: "#f1bd6c",
+            info: "#4573d2",
+          };
+
+          toast.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: white;
+      color: #37352f;
+      padding: 12px 20px;
+      border-radius: 8px;
+      border-left: 4px solid ${colors[type] || colors.info};
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 999999;
+      font-weight: 500;
+      font-size: 13px;
+      transform: translateX(120%);
+      opacity: 0;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    `;
+          toast.textContent = message;
+
+          document.body.appendChild(toast);
+
+          // Trigger animation
+          requestAnimationFrame(() => {
+            toast.style.transform = "translateX(0)";
+            toast.style.opacity = "1";
+          });
+
+          setTimeout(() => {
+            toast.style.transform = "translateX(120%)";
+            toast.style.opacity = "0";
+            setTimeout(() => toast.remove(), 450);
+          }, 4000);
+        }
+
+        // Auto-import on page load if data available
+        function autoImportOnLoad() {
+          console.log("🔍 Checking for auto-import...");
+
+          // Check URL params first
+          const urlData = checkURLParams();
+          if (urlData) {
+            console.log("✅ Auto-importing from URL");
+            setTimeout(() => {
+              fillFormWithData(urlData);
+              showToast("✨ Data auto-imported from URL!", "success");
+            }, 1000);
+            return;
+          }
+
+          // Check localStorage
+          const storageData = checkLocalStorage();
+          if (storageData) {
+            console.log("ℹ️ Data available in localStorage");
+            // Don't auto-import from storage, just notify
+            setTimeout(() => {
+              showToast(
+                '📥 Extension data available - click "Import" button',
+                "info"
+              );
+            }, 1500);
+          }
+        }
+
+        // Initialize
+        document.addEventListener("DOMContentLoaded", function () {
+          // Auto-import disabled - users will manually paste data
+          console.log("✅ Manual import mode ready");
+        });
+
+        console.log("✅ VOKRA Generator v2.9.1");
+      })();
+    </script>
+
+    <!-- ============================================================
+         FOCUS MUSIC AUDIO ELEMENT
+         ============================================================
+         To add your own music, replace the src URL below with your audio file.
+         Supported formats: MP3, WAV, OGG
+         
+         Examples:
+         - Local file: src="./focus-music.mp3"
+         - External URL: src="https://example.com/music.mp3"
+         - Data URI: src="data:audio/mp3;base64,..."
+         
+         Recommended: Use a long, looping ambient/focus track (30+ minutes)
+         ============================================================ -->
+    <audio id="focusMusic" loop preload="none">
+      <!-- ★★★ PASTE YOUR MUSIC SOURCE URL HERE ★★★ -->
+      <source src="./src/Lunar Years - Cozy Coffehouse.mp3" type="audio/mpeg" />
+      <!-- ★★★ END MUSIC SOURCE ★★★ -->
+    </audio>
+
+    <!-- Floating Action Buttons -->
+    <div class="floating-btns">
+      <button
+        class="floating-btn music-btn"
+        id="musicBtn"
+        onclick="toggleFocusMusic()"
+        title="Focus Music">
+        🎵
+      </button>
+      <button
+        class="floating-btn meditation-btn"
+        onclick="showRestOverlay()"
+        title="Paws for a min">
+        🧘
+      </button>
+    </div>
+
+    <!-- ============================================================
+         REST OVERLAY CAT IMAGE
+         ============================================================
+         To add your own meditating cat image, replace the src URL below.
+         Supported formats: PNG, JPG, GIF, SVG, WebP
+         
+         Recommended size: 120x120px or larger (will be auto-scaled)
+         
+         Examples:
+         - Local file: src="./meditation-cat.png"
+         - External URL: src="https://example.com/cat.png"
+         ============================================================ -->
+
+    <!-- Rest Overlay -->
+    <div class="rest-overlay" id="restOverlay" onclick="hideRestOverlay(event)">
+      <div
+        class="rest-emoji"
+        id="restEmojiContainer"
+        style="
+          display: flex;
+          justify-content: center;
+          width: 100%;
+          margin-bottom: 40px;
+        ">
+        <img
+          id="restCatImage"
+          src=""
+          alt="Meditating cat"
+          style="display: none"
+          onload="this.style.display='block'; document.getElementById('restEmojiFallback').style.display='none';"
+          onerror="this.style.display='none'; document.getElementById('restEmojiFallback').style.display='block';" />
+        <div
+          id="restEmojiFallback"
+          class="rest-emoji-fallback"
+          style="display: flex; justify-content: center; width: 100%">
+          <img
+            src="./src/zen-cat.png"
+            style="width: 350px; height: auto"
+            alt="Description of the image content" />
+        </div>
+      </div>
+
+      <div class="rest-message">
+        <h2>You've worked hard!</h2>
+        <p>Take a break and come back later.</p>
+      </div>
+      <button class="rest-close-btn" onclick="hideRestOverlay(event)">
+        Back to Work
+      </button>
+    </div>
+
+    <script>
+      // ============================================================
+      // FOCUS MUSIC CONTROLS
+      // ============================================================
+      let isMusicPlaying = false;
+
+      function toggleFocusMusic() {
+        const audio = document.getElementById("focusMusic");
+        const btn = document.getElementById("musicBtn");
+
+        // Check if music source is set
+        const source = audio.querySelector("source");
+        if (!source || !source.src || source.src === window.location.href) {
+          showMusicNotConfiguredToast();
+          return;
+        }
+
+        if (isMusicPlaying) {
+          audio.pause();
+          btn.classList.remove("playing");
+          btn.innerHTML = "🎵";
+          btn.title = "Focus Music";
+          isMusicPlaying = false;
+        } else {
+          audio.volume = 0.3; // Default volume 30%
+          audio
+            .play()
+            .then(() => {
+              btn.classList.add("playing");
+              btn.innerHTML = "🎵";
+              btn.title = "Stop Music";
+              isMusicPlaying = true;
+            })
+            .catch((err) => {
+              console.error("Failed to play music:", err);
+              showMusicErrorToast();
+            });
+        }
+      }
+
+      function showMusicNotConfiguredToast() {
+        // Use existing toast system if available
+        if (typeof showToast === "function") {
+          showToast(
+            "🎵 Music not configured. Add audio source in HTML.",
+            "warning"
+          );
+        } else {
+          alert(
+            "Music not configured. Please add an audio source URL in the HTML file."
+          );
+        }
+      }
+
+      function showMusicErrorToast() {
+        if (typeof showToast === "function") {
+          showToast(
+            "❌ Failed to play music. Check the audio source.",
+            "error"
+          );
+        }
+      }
+
+      // Rest overlay functions
+      function showRestOverlay() {
+        const overlay = document.getElementById("restOverlay");
+        overlay.style.display = "flex";
+        requestAnimationFrame(() => {
+          overlay.classList.add("show");
+        });
+      }
+
+      function hideRestOverlay(event) {
+        if (event) event.stopPropagation();
+        const overlay = document.getElementById("restOverlay");
+        overlay.classList.remove("show");
+        setTimeout(() => {
+          overlay.style.display = "none";
+        }, 400);
+      }
+
+      // Close overlay with Escape key
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+          const overlay = document.getElementById("restOverlay");
+          if (overlay.classList.contains("show")) {
+            hideRestOverlay();
+          }
+        }
+      });
+    </script>
+    
+    <!-- BC Pet Registry Tattoo Lookup Module -->
+    <script src="tattoo-lookup.js"></script>
+
+    <footer class="footer">
+      <p>
+        Built with
+        <svg
+          color="#7c5cbf"
+          fill="#7c5cbf"
+          style="vertical-align: -2px"
+          stroke-width="0"
+          viewBox="0 0 1024 1024"
+          class="footer-heart"
+          height="1em"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M923 283.6a260.04 260.04 0 0 0-56.9-82.8 264.4 264.4 0 0 0-84-55.5A265.34 265.34 0 0 0 679.7 125c-49.3 0-97.4 13.5-139.2 39-10 6.1-19.5 12.8-28.5 20.1-9-7.3-18.5-14-28.5-20.1-41.8-25.5-89.9-39-139.2-39-35.5 0-69.9 6.8-102.4 20.3-31.4 13-59.7 31.7-84 55.5a258.44 258.44 0 0 0-56.9 82.8c-13.9 32.3-21 66.6-21 101.9 0 33.3 6.8 68 20.3 103.3 11.3 29.5 27.5 60.1 48.2 91 32.8 48.9 77.9 99.9 133.9 151.6 92.8 85.7 184.7 144.9 188.6 147.3l23.7 15.2c10.5 6.7 24 6.7 34.5 0l23.7-15.2c3.9-2.5 95.7-61.6 188.6-147.3 56-51.7 101.1-102.7 133.9-151.6 20.7-30.9 37-61.5 48.2-91 13.5-35.3 20.3-70 20.3-103.3.1-35.3-7-69.6-20.9-101.9z"></path>
+        </svg>
+        for
+        <a
+          href="https://www.vokra.ca/"
+          target="_blank"
+          rel="noopener"
+          style="font-weight: 600"
+          >Vokra</a
+        >
+        · Need help or have feedback?
+        <a href="/cdn-cgi/l/email-protection#cca6a5ada0a58cbaa3a7beade2afad" style="font-weight: 600">Get in touch</a
+        >
+      </p>
+    </footer>
+    <script data-cfasync="false" sr
